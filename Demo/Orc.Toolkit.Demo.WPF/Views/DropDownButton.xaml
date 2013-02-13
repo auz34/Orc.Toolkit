@@ -8,8 +8,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <orctk:DropDownButton Header="Header" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Border Width="200" Height="200" Background="#efefef" BorderBrush="#cecece" BorderThickness="1">
-                <TextBox Width="100" Text="Content" VerticalAlignment="Center" />
+            <Border Width="200" Height="200" Background="#ececec" BorderBrush="#cecece" BorderThickness="1">
+                <Border BorderThickness="1" BorderBrush="White">
+                    <TextBox Width="100" Text="Content" VerticalAlignment="Center" />
+                </Border>
             </Border>
         </orctk:DropDownButton>
     </Grid>

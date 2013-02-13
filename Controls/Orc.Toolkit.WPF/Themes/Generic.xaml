@@ -1042,8 +1042,8 @@
                         </ToggleButton>
 
                         <Popup AllowsTransparency="True" Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup" 
-                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}" >
-                            <ContentPresenter Content="{TemplateBinding Content}" > 
+                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}">
+                            <ContentPresenter Content="{TemplateBinding Content}">
                             </ContentPresenter>
                         </Popup>
                     </Grid>
