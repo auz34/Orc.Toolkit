@@ -529,12 +529,6 @@
 							<ColumnDefinition Width="14"/>
 						</Grid.ColumnDefinitions>
 
-						<Border x:Name="ContentPresenterBorder"
-                                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="{TemplateBinding BorderBrush}"
-                                Background="{TemplateBinding Background}" BorderThickness="1"
-                                Grid.ColumnSpan="2">
-						</Border>
-
 						<ToggleButton Grid.ColumnSpan="2" IsTabStop="False" ClickMode="Press" HorizontalContentAlignment="Stretch"
                                       IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
                                       x:Name="PART_ToggleDropDown">
@@ -568,7 +562,7 @@
 							</ToggleButton.Content>
 						</ToggleButton>
 
-						<Popup Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup" IsOpen="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+						<Popup Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup" IsOpen="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Focusable="False"/>
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
@@ -581,6 +575,8 @@
 		<Setter Property="Background" Value="White" />
 		<Setter Property="BorderThickness" Value="1" />
 		<Setter Property="Color" Value="White" />
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="IsTabStop" Value="False"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:ColorBoard}">
@@ -604,8 +600,9 @@
 									</Style>
 
 									<Style x:Key="ThumbHorizontalStyle" TargetType="{x:Type Thumb}">
-										<Setter Property="IsTabStop" Value="False"/>
-										<Setter Property="Template">
+                                        <Setter Property="IsTabStop" Value="false" />
+                                        <Setter Property="Focusable" Value="false" />
+                                        <Setter Property="Template">
 											<Setter.Value>
 												<ControlTemplate TargetType="{x:Type Thumb}">
 													<Grid>
@@ -618,8 +615,9 @@
 									</Style>
 
 									<Style x:Key="ThumbVerticalStyle" TargetType="{x:Type Thumb}">
-										<Setter Property="IsTabStop" Value="False"/>
-										<Setter Property="Template">
+                                        <Setter Property="IsTabStop" Value="false" />
+                                        <Setter Property="Focusable" Value="false" />
+                                        <Setter Property="Template">
 											<Setter.Value>
 												<ControlTemplate TargetType="{x:Type Thumb}">
 													<Grid>
@@ -688,8 +686,9 @@
 										<Setter Property="Minimum" Value="0" />
 										<Setter Property="Value" Value="0" />
 										<Setter Property="BorderBrush" Value="Black" />
-										<Setter Property="IsTabStop" Value="False" />
-										<Setter Property="SnapsToDevicePixels" Value="true" />
+                                        <Setter Property="IsTabStop" Value="false" />
+                                        <Setter Property="Focusable" Value="false" />
+                                        <Setter Property="SnapsToDevicePixels" Value="true" />
 										<Setter Property="OverridesDefaultStyle" Value="true" />
 										<Style.Triggers>
 											<Trigger Property="Orientation" Value="Horizontal">
@@ -744,8 +743,8 @@
 											</Grid.ColumnDefinitions>
 
 											<!--HSV Part-->
-											<Canvas x:Name="CanvasHSV" Margin="2" Width="140" Height="140" Focusable="True" >
-												<Rectangle x:Name="RectangleRootHSV" Width="140" Height="140" Stroke="Black" StrokeThickness="1">
+											<Canvas x:Name="CanvasHSV" Margin="2" Width="140" Height="140" Focusable="False">
+												<Rectangle x:Name="RectangleRootHSV" Width="140" Height="140" Focusable="False" Stroke="Black" StrokeThickness="1">
 													<Rectangle.Fill>
 														<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
 															<GradientStop Color="#FFFFFFFF" Offset="0" />
@@ -754,7 +753,7 @@
 													</Rectangle.Fill>
 												</Rectangle>
 
-												<Rectangle x:Name="RectangleHSV" Width="140" Height="140">
+												<Rectangle x:Name="RectangleHSV" Focusable="False" Width="140" Height="140">
 													<Rectangle.Fill>
 														<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
 															<GradientStop Color="#00000000" Offset="0" />
@@ -763,7 +762,7 @@
 													</Rectangle.Fill>
 												</Rectangle>
 
-												<Ellipse x:Name="EllipseHSV" Height="8" Width="8" IsHitTestVisible="False">
+												<Ellipse x:Name="EllipseHSV" Focusable="False" Height="8" Width="8" IsHitTestVisible="False">
 													<Ellipse.Fill>
 														<RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.5" RadiusY="0.5">
 															<GradientStop Color="Transparent" Offset="0" />
@@ -776,7 +775,7 @@
 												</Ellipse>
 											</Canvas>
 
-											<Slider Name="SliderHSV" Grid.Column="1" Margin="0" Height="150" 
+											<Slider Name="SliderHSV" Grid.Column="1" Margin="0" Height="150" Focusable="False"
                                                         HorizontalAlignment="Stretch" IsDirectionReversed="True" Maximum="359" 
                                                         SmallChange="1" Orientation="Vertical">
 												<Slider.Background>
@@ -991,4 +990,65 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+    <Style TargetType="{x:Type local:DropDownButton}">
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Focusable" Value="True"/>
+        <Setter Property="MinWidth" Value="35"/>
+        <Setter Property="MinHeight" Value="19"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DropDownButton}">
+                    <Grid x:Name="grid" Background="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="arrow" Storyboard.TargetProperty="Fill">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Gray"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="14"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ToggleButton Grid.ColumnSpan="2" IsTabStop="False" ClickMode="Press" HorizontalContentAlignment="Stretch"
+                                      IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                      x:Name="PART_ToggleDropDown">
+                            <ToggleButton.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path x:Name="arrow" Data="M 0 0 L 2.5 3 L 5 0 Z" Fill="Black" HorizontalAlignment="Center"
+                                      VerticalAlignment="Center" Stretch="None" Grid.Column="1" Width="5"/>
+
+                                    <Grid>
+                                        <ContentPresenter Content="{TemplateBinding Header}"/>
+                                    </Grid>
+                                </Grid>
+                            </ToggleButton.Content>
+                        </ToggleButton>
+
+                        <Popup AllowsTransparency="True" Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup" 
+                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}" >
+                            <ContentPresenter Content="{TemplateBinding Content}" > 
+                            </ContentPresenter>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
