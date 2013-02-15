@@ -47,6 +47,9 @@
     <Compile Include="..\Orc.Toolkit.SL\Commands\DelegateCommand.cs">
       <Link>Commands\DelegateCommand.cs</Link>
     </Compile>
+    <Compile Include="..\Orc.Toolkit.SL\DropDownButton\DropDownButton.cs">
+      <Link>DropDownButton\DropDownButton.cs</Link>
+    </Compile>
     <Compile Include="..\Orc.Toolkit.SL\FolderPicker\BrowseForFolderDialog.cs">
       <Link>FolderPicker\BrowseForFolderDialog.cs</Link>
     </Compile>
@@ -67,7 +70,6 @@
     </Compile>
     <Compile Include="ColorPicker\ColorChangedEventArgs.cs" />
     <Compile Include="ColorPicker\PredefinedColor.cs" />
-    <Compile Include="DropDownButton\DropDownButton.cs" />
     <Compile Include="PrintingCanvas\CanvasToPrint.cs" />
     <Compile Include="ColorPicker\ColorBoard.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />

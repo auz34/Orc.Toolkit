@@ -51,7 +51,7 @@ namespace Orc.Toolkit
         /// The popup placement property.
         /// </summary>
         public static readonly DependencyProperty PopupPlacementProperty = DependencyProperty.Register(
-            "PopupPlacement", typeof(PopupPlacement), typeof(ColorPicker), new PropertyMetadata(PopupPlacement.Bottom));
+            "PopupPlacement", typeof(PlacementMode), typeof(ColorPicker), new PropertyMetadata(PlacementMode.Bottom));
 
         #endregion
 
@@ -148,11 +148,11 @@ namespace Orc.Toolkit
         /// <summary>
         /// Gets or sets the popup placement.
         /// </summary>
-        public PopupPlacement PopupPlacement
+        public PlacementMode PopupPlacement
         {
             get
             {
-                return (PopupPlacement)this.GetValue(PopupPlacementProperty);
+                return (PlacementMode)this.GetValue(PopupPlacementProperty);
             }
 
             set
@@ -290,22 +290,22 @@ namespace Orc.Toolkit
         /// </param>
         private void colorBoard_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (this.PopupPlacement == PopupPlacement.Bottom)
+            if (this.PopupPlacement == PlacementMode.Bottom)
             {
                 this.popup.VerticalOffset = this.ActualHeight;
             }
 
-            if (this.PopupPlacement == PopupPlacement.Top)
+            if (this.PopupPlacement == PlacementMode.Top)
             {
                 this.popup.VerticalOffset = -1 * this.colorBoard.ActualHeight;
             }
 
-            if (this.PopupPlacement == PopupPlacement.Right)
+            if (this.PopupPlacement == PlacementMode.Right)
             {
                 this.popup.HorizontalOffset = this.ActualWidth;
             }
 
-            if (this.PopupPlacement == PopupPlacement.Left)
+            if (this.PopupPlacement == PlacementMode.Left)
             {
                 this.popup.HorizontalOffset = -1 * this.colorBoard.ActualWidth;
             }
