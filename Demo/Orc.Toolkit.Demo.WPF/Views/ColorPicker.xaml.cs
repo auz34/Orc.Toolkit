@@ -1,27 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ColorPicker.xaml.cs" company="ORC">
+//   MS-PL
+// </copyright>
+// <summary>
+//   Interaction logic for ColorPicker.xaml
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Orc.Toolkit.Demo.Views
 {
+    using System.Windows.Controls;
+
     /// <summary>
     /// Interaction logic for ColorPicker.xaml
     /// </summary>
     public partial class ColorPicker : UserControl
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorPicker"/> class.
+        /// </summary>
         public ColorPicker()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion
     }
 }

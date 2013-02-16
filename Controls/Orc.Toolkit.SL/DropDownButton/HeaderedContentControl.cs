@@ -1,32 +1,63 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HeaderedContentControl.cs" company="ORC">
+//   MS-PL
+// </copyright>
+// <summary>
+//   The headered content control.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Orc.Toolkit
 {
+    using System.Windows;
+    using System.Windows.Controls;
+
+    /// <summary>
+    /// The headered content control.
+    /// </summary>
     public class HeaderedContentControl : ContentControl
     {
+        #region Static Fields
+
+        /// <summary>
+        /// The header property.
+        /// </summary>
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(object), typeof(HeaderedContentControl), new PropertyMetadata(null));
+
+        #endregion
+
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HeaderedContentControl"/> class.
+        /// </summary>
         public HeaderedContentControl()
         {
             this.DefaultStyleKey = typeof(HeaderedContentControl);
         }
 
-        #region DP
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets or sets the header.
+        /// </summary>
         [System.ComponentModel.Bindable(true)]
         public object Header
         {
-            get { return (object)GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get
+            {
+                return (object)this.GetValue(HeaderProperty);
+            }
+
+            set
+            {
+                this.SetValue(HeaderProperty, value);
+            }
         }
-        public static readonly DependencyProperty HeaderProperty =
-            DependencyProperty.Register("Header", typeof(object), typeof(HeaderedContentControl), new PropertyMetadata(null));
+
         #endregion
     }
 }
