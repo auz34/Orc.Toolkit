@@ -47,6 +47,9 @@
     <Compile Include="..\Orc.Toolkit.SL\Commands\DelegateCommand.cs">
       <Link>Commands\DelegateCommand.cs</Link>
     </Compile>
+    <Compile Include="..\Orc.Toolkit.SL\DropDownButton\DropDownButton.cs">
+      <Link>DropDownButton\DropDownButton.cs</Link>
+    </Compile>
     <Compile Include="..\Orc.Toolkit.SL\FolderPicker\BrowseForFolderDialog.cs">
       <Link>FolderPicker\BrowseForFolderDialog.cs</Link>
     </Compile>

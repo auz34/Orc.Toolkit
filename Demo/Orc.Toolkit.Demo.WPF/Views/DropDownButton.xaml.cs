@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ColorPicker.xaml.cs" company="ORC">
+// <copyright file="DropDownButton.xaml.cs" company="ORC">
 //   MS-PL
 // </copyright>
 // <summary>
-//   Interaction logic for ColorPicker.xaml
+//   Interaction logic for DropDownButton.xaml
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,16 +12,16 @@ namespace Orc.Toolkit.Demo.Views
     using System.Windows.Controls;
 
     /// <summary>
-    /// Interaction logic for ColorPicker.xaml
+    /// Interaction logic for DropDownButton.xaml
     /// </summary>
-    public partial class ColorPicker : UserControl
+    public partial class DropDownButton : UserControl
     {
         #region Constructors and Destructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ColorPicker"/> class.
+        /// Initializes a new instance of the <see cref="DropDownButton"/> class.
         /// </summary>
-        public ColorPicker()
+        public DropDownButton()
         {
             this.InitializeComponent();
         }

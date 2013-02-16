@@ -17,6 +17,9 @@
 			<TabItem Header="ColorPicker">
 				<local:ColorPicker />
 			</TabItem>
+            <TabItem Header="DropDownButton">
+                <local:DropDownButton />
+            </TabItem>
 		</TabControl>
 	</Grid>
 </Window>
