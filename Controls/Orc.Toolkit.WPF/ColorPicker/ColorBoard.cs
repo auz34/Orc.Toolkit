@@ -533,7 +533,8 @@ namespace Orc.Toolkit
         /// </param>
         private void HSV_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.trackingHSV = true; // rectangleHSV.CaptureMouse();
+            e.Handled = true;
+            this.trackingHSV = rectangleHSV.CaptureMouse();
 
             Point point = e.GetPosition(this.rectangleHSV);
 
@@ -562,9 +563,10 @@ namespace Orc.Toolkit
         /// </param>
         private void HSV_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
             this.trackingHSV = false;
 
-            // rectangleHSV.ReleaseMouseCapture();
+            rectangleHSV.ReleaseMouseCapture();
         }
 
         /// <summary>
@@ -580,11 +582,34 @@ namespace Orc.Toolkit
         {
             if (this.trackingHSV)
             {
+                e.Handled = true;
                 Point point = e.GetPosition(this.rectangleHSV);
                 Size size = this.ellipseHSV.RenderSize;
 
-                this.ellipseHSV.SetValue(Canvas.LeftProperty, point.X - this.ellipseHSV.ActualWidth / 2);
-                this.ellipseHSV.SetValue(Canvas.TopProperty, point.Y - this.ellipseHSV.ActualHeight / 2);
+                double ellipseX = 0;
+                if (point.X < 0)
+                    ellipseX = 0 - this.ellipseHSV.ActualWidth / 2;
+                else
+                {
+                    if(point.X>canvasHSV.ActualWidth)
+                        ellipseX = canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    else
+                        ellipseX = point.X - this.ellipseHSV.ActualWidth / 2;
+                }
+
+                double ellipseY = 0;
+                if (point.Y < 0)
+                    ellipseY = 0 - this.ellipseHSV.ActualHeight / 2;
+                else
+                {
+                    if (point.Y > canvasHSV.ActualHeight)
+                        ellipseY = canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    else
+                        ellipseY = point.Y - this.ellipseHSV.ActualHeight / 2;
+                }
+
+                this.ellipseHSV.SetValue(Canvas.LeftProperty, ellipseX);
+                this.ellipseHSV.SetValue(Canvas.TopProperty, ellipseY);
 
                 if (this.Updating)
                 {
