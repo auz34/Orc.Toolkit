@@ -1035,14 +1035,14 @@
                                       VerticalAlignment="Center" Stretch="None" Grid.Column="1" Width="5"/>
 
                                     <Grid>
-                                        <ContentPresenter Content="{TemplateBinding Header}"/>
+                                        <ContentPresenter Content="{TemplateBinding Header}" x:Name="PART_ContentPresenter"/>
                                     </Grid>
                                 </Grid>
                             </ToggleButton.Content>
                         </ToggleButton>
 
-                        <Popup AllowsTransparency="True" Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup" 
-                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}">
+                        <Popup AllowsTransparency="True" Placement="{Binding PopupPlacement, RelativeSource={RelativeSource TemplatedParent}}" x:Name="PART_Popup"
+                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}" PlacementTarget="{Binding ElementName=PART_ToggleDropDown}">
                             <ContentPresenter Content="{TemplateBinding Content}">
                             </ContentPresenter>
                         </Popup>

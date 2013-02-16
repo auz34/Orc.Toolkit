@@ -23,7 +23,7 @@ namespace Orc.Toolkit
 
         public DropDownButton()
         {
-            this.DefaultStyleKey = typeof(DropDownButton);
+            this.DefaultStyleKey = typeof(DropDownButton);            
         }
 
         #region OVERRIDE
@@ -33,10 +33,19 @@ namespace Orc.Toolkit
             button = (ToggleButton)GetTemplateChild("PART_ToggleDropDown");
             popup = (Popup)GetTemplateChild("PART_Popup");
             contentPresenter = (FrameworkElement)GetTemplateChild("PART_ContentPresenter");
-            #if (SILVERLIGHT)
-            contentPresenter.SizeChanged += contentPresenter_SizeChanged;
+
+            this.SizeChanged += DropDownButton_SizeChanged;
+
+            #if (!SILVERLIGHT)
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                Window window = Window.GetWindow(this);
+                window.LocationChanged += window_LocationChanged;
+                window.SizeChanged += window_SizeChanged;
+                LayoutUpdated += DropDownButton_LayoutUpdated;
+            }
             #endif
-        }
+        }        
         #endregion
 
         #region DP
@@ -50,9 +59,39 @@ namespace Orc.Toolkit
         #endregion
 
         #region private
-        #if (SILVERLIGHT)
-        void contentPresenter_SizeChanged(object sender, SizeChangedEventArgs e)
+
+#if (!SILVERLIGHT)
+        void UpdatePopupPosition()
         {
+            if (popup != null)
+            {
+                if (popup.IsOpen)
+                {
+                    popup.HorizontalOffset += 0.1;
+                    popup.HorizontalOffset -= 0.1;
+                }
+            }
+        }
+
+        void window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdatePopupPosition();
+        }        
+
+        void window_LocationChanged(object sender, EventArgs e)
+        {
+            UpdatePopupPosition();
+        }
+
+        void DropDownButton_LayoutUpdated(object sender, EventArgs e)
+        {
+            UpdatePopupPosition();
+        }
+#endif
+
+        void DropDownButton_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+#if (SILVERLIGHT)
             if (this.PopupPlacement == PlacementMode.Bottom)
             {
                 this.popup.VerticalOffset = this.ActualHeight;
@@ -72,8 +111,15 @@ namespace Orc.Toolkit
             {
                 this.popup.HorizontalOffset = -1 * this.contentPresenter.ActualWidth;
             }
+#endif
+#if(!SILVERLIGHT)
+            if (popup != null)
+            {
+                UpdatePopupPosition();
+            }
+#endif
         }
-        #endif
+
         #endregion
     }
 }
