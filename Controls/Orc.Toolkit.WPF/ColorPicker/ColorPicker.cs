@@ -181,6 +181,7 @@ namespace Orc.Toolkit
             // colorBoard.SizeChanged += colorBoard_SizeChanged;
             this.popup.Child = this.colorBoard;
             this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
+            this.colorBoard.CancelClicked += colorBoard_CancelClicked;
 
             var b = new Binding("Color");
             b.Mode = BindingMode.TwoWay;
@@ -194,7 +195,7 @@ namespace Orc.Toolkit
             window.SizeChanged += window_SizeChanged;
             LayoutUpdated += DropDownButton_LayoutUpdated;
         }
-
+        
         #endregion
 
         #region Methods
@@ -284,6 +285,21 @@ namespace Orc.Toolkit
         private void colorBoard_DoneClicked(object sender, RoutedEventArgs e)
         {
             this.Color = this.colorBoard.Color;
+            this.popup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// The color board_ cancel clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        void colorBoard_CancelClicked(object sender, RoutedEventArgs e)
+        {
+            this.colorBoard.Color = this.CurrentColor = this.Color;
             this.popup.IsOpen = false;
         }
 

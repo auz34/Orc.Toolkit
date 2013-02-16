@@ -56,6 +56,11 @@ namespace Orc.Toolkit
         private Button buttonDone;
 
         /// <summary>
+        /// The button cancel.
+        /// </summary>
+        private Button buttonCancel;
+
+        /// <summary>
         /// The canvas hsv.
         /// </summary>
         private Canvas canvasHSV;
@@ -237,6 +242,11 @@ namespace Orc.Toolkit
         /// </summary>
         public event RoutedEventHandler DoneClicked;
 
+        /// <summary>
+        /// The done clicked.
+        /// </summary>
+        public event RoutedEventHandler CancelClicked;
+
         #endregion
 
         #region Public Properties
@@ -331,6 +341,7 @@ namespace Orc.Toolkit
             this.brushColor = (SolidColorBrush)this.GetTemplateChild("BrushColor");
             this.textBoxColor = (TextBox)this.GetTemplateChild("TextBoxColor");
             this.buttonDone = (Button)this.GetTemplateChild("ButtonDone");
+            this.buttonCancel = (Button)this.GetTemplateChild("ButtonCancel");
             this.themeColorsGrid = (ListBox)this.GetTemplateChild("ThemeColorsGrid");
             this.recentColorsGrid = (ListBox)this.GetTemplateChild("RecentColorsGrid");
 
@@ -358,6 +369,7 @@ namespace Orc.Toolkit
             this.textBoxColor.GotFocus += this.textBoxColor_GotFocus;
             this.textBoxColor.LostFocus += this.textBoxColor_LostFocus;
             this.buttonDone.Click += this.buttonDone_Click;
+            this.buttonCancel.Click += this.buttonCancel_Click;
 
             this.InitializePredefined();
             this.InitializeThemeColors();
@@ -365,6 +377,7 @@ namespace Orc.Toolkit
 
             this.KeyDown += this.ColorBoard_KeyDown;
         }
+
 
         /// <summary>
         /// The on done clicked.
@@ -393,6 +406,16 @@ namespace Orc.Toolkit
             }
         }
 
+        /// <summary>
+        /// The on cancel clicked.
+        /// </summary>
+        public void OnCancelClicked()
+        {
+            if (this.CancelClicked != null)
+            {
+                this.CancelClicked(this, new RoutedEventArgs());
+            }
+        }
         #endregion
 
         #region Methods
@@ -793,6 +816,19 @@ namespace Orc.Toolkit
             this.OnDoneClicked();
         }
 
+        /// <summary>
+        /// The button cancel_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnCancelClicked();
+        }
         /// <summary>
         /// The combo box color_ selection changed.
         /// </summary>
