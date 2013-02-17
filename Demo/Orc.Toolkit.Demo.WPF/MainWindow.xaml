@@ -20,6 +20,9 @@
             <TabItem Header="DropDownButton">
                 <local:DropDownButton />
             </TabItem>
+            <TabItem Header="ColorLegend">
+                <local:ColorLegend />
+            </TabItem>
 		</TabControl>
 	</Grid>
 </Window>

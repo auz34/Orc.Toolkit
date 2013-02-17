@@ -14,7 +14,7 @@ namespace Orc.Toolkit.Commands
     /// <summary>
     ///     The DelegateCommand class.
     /// </summary>
-    internal class DelegateCommand : ICommand
+    public class DelegateCommand : ICommand
     {
         #region Fields
 

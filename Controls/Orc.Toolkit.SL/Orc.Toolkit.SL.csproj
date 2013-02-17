@@ -60,6 +60,8 @@
     <Compile Include="ColorPicker\PredefinedColor.cs" />
     <Compile Include="DropDownButton\DropDownButton.cs" />
     <Compile Include="DropDownButton\HeaderedContentControl.cs" />
+    <Compile Include="ExtendedColorLegend\ExtendedColorLegend.cs" />
+    <Compile Include="ExtendedColorLegend\IColorProvider.cs" />
     <Compile Include="PrintingCanvas\CanvasToPrint.cs" />
     <Compile Include="ColorPicker\ColorBoard.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Statusbar\StatusBar.cs" />
     <Compile Include="Statusbar\StatusBarItem.cs" />
     <Compile Include="PinnableTooltip\TooltipTimer.cs" />
+    <Compile Include="WatermarkTextBox\WatermarkTextBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\Generic.xaml">
@@ -95,7 +98,9 @@
   <ItemGroup>
     <Resource Include="Themes\Images\pin.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Themes\Images\ClearFilter16.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
