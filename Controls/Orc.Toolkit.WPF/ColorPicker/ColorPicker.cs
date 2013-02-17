@@ -181,6 +181,7 @@ namespace Orc.Toolkit
             // colorBoard.SizeChanged += colorBoard_SizeChanged;
             this.popup.Child = this.colorBoard;
             this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
+            this.colorBoard.CancelClicked += colorBoard_CancelClicked;
 
             var b = new Binding("Color");
             b.Mode = BindingMode.TwoWay;
@@ -188,8 +189,13 @@ namespace Orc.Toolkit
             this.SetBinding(CurrentColorProperty, b);
 
             this.KeyDown += this.ColorPicker_KeyDown;
-        }
 
+            Window window = Window.GetWindow(this);
+            window.LocationChanged += window_LocationChanged;
+            window.SizeChanged += window_SizeChanged;
+            LayoutUpdated += DropDownButton_LayoutUpdated;
+        }
+        
         #endregion
 
         #region Methods
@@ -282,18 +288,80 @@ namespace Orc.Toolkit
             this.popup.IsOpen = false;
         }
 
+        /// <summary>
+        /// The color board_ cancel clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        void colorBoard_CancelClicked(object sender, RoutedEventArgs e)
+        {
+            this.colorBoard.Color = this.CurrentColor = this.Color;
+            this.popup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// Updates popup position
+        /// </summary>
+        void UpdatePopupPosition()
+        {
+            if (popup != null)
+            {
+                if (popup.IsOpen)
+                {
+                    popup.HorizontalOffset += 0.1;
+                    popup.HorizontalOffset -= 0.1;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The window size clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        void window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdatePopupPosition();
+        }
+
+        /// <summary>
+        /// The window location changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        void window_LocationChanged(object sender, EventArgs e)
+        {
+            UpdatePopupPosition();
+        }
+
+        /// <summary>
+        /// The cDropDownButton LayoutUpdated.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        void DropDownButton_LayoutUpdated(object sender, EventArgs e)
+        {
+            UpdatePopupPosition();
+        }
+
         #endregion
 
-        // void colorBoard_SizeChanged(object sender, SizeChangedEventArgs e)
-        // {
-        // if (PopupPlacement == PopupPlacement.Bottom)
-        // popup.VerticalOffset = ActualHeight;
-        // if (PopupPlacement == PopupPlacement.Top)
-        // popup.VerticalOffset = -1 * colorBoard.ActualHeight;
-        // if (PopupPlacement == PopupPlacement.Right)
-        // popup.HorizontalOffset = ActualWidth;
-        // if (PopupPlacement == PopupPlacement.Left)
-        // popup.HorizontalOffset = -1 * colorBoard.ActualWidth;
-        // }
+        
     }
 }

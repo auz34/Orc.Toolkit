@@ -56,6 +56,11 @@ namespace Orc.Toolkit
         private Button buttonDone;
 
         /// <summary>
+        /// The button cancel.
+        /// </summary>
+        private Button buttonCancel;
+
+        /// <summary>
         /// The canvas hsv.
         /// </summary>
         private Canvas canvasHSV;
@@ -237,6 +242,11 @@ namespace Orc.Toolkit
         /// </summary>
         public event RoutedEventHandler DoneClicked;
 
+        /// <summary>
+        /// The done clicked.
+        /// </summary>
+        public event RoutedEventHandler CancelClicked;
+
         #endregion
 
         #region Public Properties
@@ -331,6 +341,7 @@ namespace Orc.Toolkit
             this.brushColor = (SolidColorBrush)this.GetTemplateChild("BrushColor");
             this.textBoxColor = (TextBox)this.GetTemplateChild("TextBoxColor");
             this.buttonDone = (Button)this.GetTemplateChild("ButtonDone");
+            this.buttonCancel = (Button)this.GetTemplateChild("ButtonCancel");
             this.themeColorsGrid = (ListBox)this.GetTemplateChild("ThemeColorsGrid");
             this.recentColorsGrid = (ListBox)this.GetTemplateChild("RecentColorsGrid");
 
@@ -358,6 +369,7 @@ namespace Orc.Toolkit
             this.textBoxColor.GotFocus += this.textBoxColor_GotFocus;
             this.textBoxColor.LostFocus += this.textBoxColor_LostFocus;
             this.buttonDone.Click += this.buttonDone_Click;
+            this.buttonCancel.Click += this.buttonCancel_Click;
 
             this.InitializePredefined();
             this.InitializeThemeColors();
@@ -365,6 +377,7 @@ namespace Orc.Toolkit
 
             this.KeyDown += this.ColorBoard_KeyDown;
         }
+
 
         /// <summary>
         /// The on done clicked.
@@ -393,6 +406,16 @@ namespace Orc.Toolkit
             }
         }
 
+        /// <summary>
+        /// The on cancel clicked.
+        /// </summary>
+        public void OnCancelClicked()
+        {
+            if (this.CancelClicked != null)
+            {
+                this.CancelClicked(this, new RoutedEventArgs());
+            }
+        }
         #endregion
 
         #region Methods
@@ -533,7 +556,8 @@ namespace Orc.Toolkit
         /// </param>
         private void HSV_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.trackingHSV = true; // rectangleHSV.CaptureMouse();
+            e.Handled = true;
+            this.trackingHSV = rectangleHSV.CaptureMouse();
 
             Point point = e.GetPosition(this.rectangleHSV);
 
@@ -562,9 +586,10 @@ namespace Orc.Toolkit
         /// </param>
         private void HSV_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            e.Handled = true;
             this.trackingHSV = false;
 
-            // rectangleHSV.ReleaseMouseCapture();
+            rectangleHSV.ReleaseMouseCapture();
         }
 
         /// <summary>
@@ -580,11 +605,34 @@ namespace Orc.Toolkit
         {
             if (this.trackingHSV)
             {
+                e.Handled = true;
                 Point point = e.GetPosition(this.rectangleHSV);
                 Size size = this.ellipseHSV.RenderSize;
 
-                this.ellipseHSV.SetValue(Canvas.LeftProperty, point.X - this.ellipseHSV.ActualWidth / 2);
-                this.ellipseHSV.SetValue(Canvas.TopProperty, point.Y - this.ellipseHSV.ActualHeight / 2);
+                double ellipseX = 0;
+                if (point.X < 0)
+                    ellipseX = 0 - this.ellipseHSV.ActualWidth / 2;
+                else
+                {
+                    if(point.X>canvasHSV.ActualWidth)
+                        ellipseX = canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    else
+                        ellipseX = point.X - this.ellipseHSV.ActualWidth / 2;
+                }
+
+                double ellipseY = 0;
+                if (point.Y < 0)
+                    ellipseY = 0 - this.ellipseHSV.ActualHeight / 2;
+                else
+                {
+                    if (point.Y > canvasHSV.ActualHeight)
+                        ellipseY = canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    else
+                        ellipseY = point.Y - this.ellipseHSV.ActualHeight / 2;
+                }
+
+                this.ellipseHSV.SetValue(Canvas.LeftProperty, ellipseX);
+                this.ellipseHSV.SetValue(Canvas.TopProperty, ellipseY);
 
                 if (this.Updating)
                 {
@@ -768,6 +816,19 @@ namespace Orc.Toolkit
             this.OnDoneClicked();
         }
 
+        /// <summary>
+        /// The button cancel_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void buttonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnCancelClicked();
+        }
         /// <summary>
         /// The combo box color_ selection changed.
         /// </summary>
