@@ -30,7 +30,7 @@ namespace Orc.Toolkit.Demo.Views
 
         public void FillLegend(ExtendedColorLegend elc)
         {
-            ObservableCollection<IColorProvider> colors = new ObservableCollection<IColorProvider>();
+            var colors = new ObservableCollection<IColorProvider>();
             colors.Add(new DemoColorProvider() { Color = Colors.Red, IsVisible = true, Description = "Red" });
             colors.Add(new DemoColorProvider() { Color = Colors.Yellow, IsVisible = true, Description = "Yellow" });
             colors.Add(new DemoColorProvider() { Color = Colors.Green, IsVisible = true, Description = "Green" });
