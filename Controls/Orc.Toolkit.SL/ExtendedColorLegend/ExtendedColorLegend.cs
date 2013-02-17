@@ -15,13 +15,18 @@ namespace Orc.Toolkit
     using System.Windows.Controls;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Windows.Controls.Primitives;
+    using System.Windows.Data;
     using System.Windows.Input;
+    using System.Windows.Media;
 
     using Orc.Toolkit.Commands;
 
     /// <summary>
     /// Control to show color legend with checkboxes for each color
     /// </summary>
+    [TemplatePart(Name = "PART_List", Type = typeof(ListBox))]
+    [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     public class ExtendedColorLegend : HeaderedContentControl
     {
         #region Dependency properties
@@ -44,6 +49,26 @@ namespace Orc.Toolkit
             typeof(ObservableCollection<IColorProvider>),
             typeof(ExtendedColorLegend),
             new PropertyMetadata(null));
+
+        /// <summary>
+        /// Property indicating whether color can be edited or not
+        /// </summary>
+        public static readonly DependencyProperty AllowColorEditingProperty = DependencyProperty.Register("AllowColorEditing", typeof(bool), typeof(ExtendedColorLegend), new PropertyMetadata(true));
+
+        /// <summary>
+        /// The is drop down open property.
+        /// </summary>
+        public static readonly DependencyProperty IsColorSelectingProperty = DependencyProperty.Register(
+            "IsColorSelecting",
+            typeof(bool),
+            typeof(ExtendedColorLegend),
+            new PropertyMetadata(false, OnIsColorSelectingPropertyChanged));
+
+        /// <summary>
+        /// The current color property.
+        /// </summary>
+        public static readonly DependencyProperty EditingColorProperty = DependencyProperty.Register(
+            "EditingColor", typeof(Color), typeof(ExtendedColorLegend), new PropertyMetadata(Colors.White));
 
         #if(!SILVERLIGHT)
         /// <summary>
@@ -110,6 +135,26 @@ namespace Orc.Toolkit
         #endregion
 
         /// <summary>
+        /// The color board.
+        /// </summary>
+        private ColorBoard colorBoard;
+
+        /// <summary>
+        /// The listbox.
+        /// </summary>
+        private ListBox listBox;
+
+        /// <summary>
+        /// The popup
+        /// </summary>
+        private Popup popup;
+
+        /// <summary>
+        /// Item color of which is editing now
+        /// </summary>
+        private IColorProvider currentColorProvider;
+
+        /// <summary>
         /// Initializes static members of the <see cref="ExtendedColorLegend" /> class.
         /// </summary>
         static ExtendedColorLegend()
@@ -140,6 +185,22 @@ namespace Orc.Toolkit
         /// </summary>
         public ICommand ClearFilterCommand { get; set; }
         #endif
+
+        /// <summary>
+        /// Gets or sets a value indicating whether color can be edited or not
+        /// </summary>
+        public bool AllowColorEditing
+        {
+            get
+            {
+                return (bool)GetValue(AllowColorEditingProperty);
+            }
+
+            set
+            {
+                this.SetValue(AllowColorEditingProperty, value);
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether search box is shown or not
@@ -206,6 +267,42 @@ namespace Orc.Toolkit
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether user editing current color
+        /// </summary>
+        public bool IsColorSelecting
+        {
+            get
+            {
+                return (bool)GetValue(IsColorSelectingProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsColorSelectingProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether user editing current color
+        /// </summary>
+        public Color EditingColor
+        {
+            get
+            {
+                return (Color)GetValue(EditingColorProperty);
+            }
+
+            set
+            {
+                this.SetValue(EditingColorProperty, value);
+                if (this.currentColorProvider != null)
+                {
+                    this.currentColorProvider.Color = value;
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets filter for list of color
         /// </summary>
         public string Filter
@@ -239,7 +336,7 @@ namespace Orc.Toolkit
         }
 
         /// <summary>
-        /// Gets source for color items respecting current filter value
+        /// Gets or sets a source for color items respecting current filter value
         /// </summary>
         public IEnumerable<IColorProvider> FilteredItemsSource
         {
@@ -269,6 +366,9 @@ namespace Orc.Toolkit
             }
         }
 
+        /// <summary>
+        /// Gets or sets list of selected items
+        /// </summary>
         public ObservableCollection<IColorProvider> SelectedColorItems
         {
             get
@@ -285,6 +385,51 @@ namespace Orc.Toolkit
         #endregion
 
         /// <summary>
+        /// The on apply template.
+        /// </summary>
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            this.listBox = (ListBox)this.GetTemplateChild("PART_List");
+            this.popup = (Popup)this.GetTemplateChild("PART_Popup");
+
+            if (this.listBox != null)
+            {
+                this.listBox.SelectionChanged += (sender, args) => { this.SelectedColorItems = this.GetSelectedList(); };
+                #if (!SILVERLIGHT)
+                this.listBox.MouseDoubleClick += new MouseButtonEventHandler(this.ListBoxMouseDoubleClick);
+                #endif
+            }
+
+            this.colorBoard = new ColorBoard();
+            // colorBoard.SizeChanged += colorBoard_SizeChanged;
+            this.popup.Child = this.colorBoard;
+
+            var b = new Binding("Color");
+            b.Mode = BindingMode.TwoWay;
+            b.Source = this.colorBoard;
+            this.SetBinding(EditingColorProperty, b);
+            this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
+        }
+
+        /// <summary>
+        /// The get selected list.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="ObservableCollection"/>.
+        /// </returns>
+        public ObservableCollection<IColorProvider> GetSelectedList()
+        {
+            var result = new ObservableCollection<IColorProvider>();
+            foreach (object item in this.listBox.SelectedItems)
+            {
+                result.Add(item as IColorProvider);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Process filter changed event
         /// </summary>
         /// <param name="o">Sender dependency object</param>
@@ -296,6 +441,24 @@ namespace Orc.Toolkit
             if (extendedColorLegend != null)
             {
                 extendedColorLegend.OnFilterChanged((string)e.OldValue, (string)e.NewValue);
+            }
+        }
+
+        /// <summary>
+        /// The on is drop down open property changed.
+        /// </summary>
+        /// <param name="d">
+        /// The d.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private static void OnIsColorSelectingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var cp = (ExtendedColorLegend)d;
+            if (cp == null)
+            {
+                return;
             }
         }
 
@@ -341,6 +504,65 @@ namespace Orc.Toolkit
         }
 
         #endregion //Commands
+
+        /// <summary>
+        /// Handler for double click
+        /// </summary>
+        /// <param name="sender">the list box item</param>
+        /// <param name="e">event parameters</param>
+        private void ListBoxMouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (!this.AllowColorEditing)
+            {
+                return;
+            }
+
+            var elem = (UIElement)this.InputHitTest(e.GetPosition(this));
+            ListBoxItem clickedItem = null;
+
+            while (elem != this)
+            {
+                if (elem is ListBoxItem)
+                {
+                    clickedItem = (ListBoxItem)elem;
+                    break;
+                }
+
+                elem = (UIElement)VisualTreeHelper.GetParent(elem);
+            }
+
+            if (clickedItem == null)
+            {
+                return;
+            }
+
+            var colorProvider = clickedItem.Content as IColorProvider;
+
+            if (colorProvider == null)
+            {
+                return;
+            }
+
+            this.EditingColor = colorProvider.Color;
+            this.currentColorProvider = colorProvider;
+            this.IsColorSelecting = true;
+
+        }
         #endif
+
+        /// <summary>
+        /// The color board_ done clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void colorBoard_DoneClicked(object sender, RoutedEventArgs e)
+        {
+            this.EditingColor = this.colorBoard.Color;
+            this.popup.IsOpen = false;
+        }
     }
 }

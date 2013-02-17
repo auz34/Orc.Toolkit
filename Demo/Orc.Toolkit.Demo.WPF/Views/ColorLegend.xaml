@@ -19,5 +19,6 @@
         <CheckBox Content="Show Settings" Height="16" HorizontalAlignment="Left" Margin="288,46,0,0" Name="cbShowSettings" VerticalAlignment="Top" IsChecked="True" Checked="cbShowSettings_Checked" Unchecked="cbShowSettings_Unchecked" />
         <CheckBox Content="Show Toolbox" Height="16" HorizontalAlignment="Left" Margin="288,66,0,0" Name="cbShowToolbox" VerticalAlignment="Top" IsChecked="True" Checked="cbShowToolbox_Checked" Unchecked="cbShowToolbox_Unchecked" />
         <CheckBox Content="Show Checkboxes" Height="16" HorizontalAlignment="Left" Margin="288,86,0,0" Name="cbShowColorVisibility" VerticalAlignment="Top" IsChecked="True" Checked="cbShowColorVisibility_Checked" Unchecked="cbShowColorVisibility_Unchecked" />
+        <CheckBox Content="Allow Color Edit" Height="16" HorizontalAlignment="Left" Margin="288,106,0,0" Name="cbAllowColorEditing" VerticalAlignment="Top" IsChecked="True" Unchecked="cbAllowColorEditing_Unchecked" Checked="cbAllowColorEditing_Checked" />
     </Grid>
 </UserControl>

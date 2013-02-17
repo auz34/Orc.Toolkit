@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 namespace Orc.Toolkit.Demo.Views
 {
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
 
     /// <summary>
     /// Interaction logic for ColorLegend.xaml
@@ -75,6 +76,16 @@ namespace Orc.Toolkit.Demo.Views
         {
             extendedColorLegend1.ShowColorVisibilityControls = false;
         }
+
+        private void cbAllowColorEditing_Checked(object sender, RoutedEventArgs e)
+        {
+            extendedColorLegend1.AllowColorEditing = true;
+        }
+
+        private void cbAllowColorEditing_Unchecked(object sender, RoutedEventArgs e)
+        {
+            extendedColorLegend1.AllowColorEditing = false;
+        }
     }
 
     public class DemoColorProvider : IColorProvider
@@ -108,6 +119,11 @@ namespace Orc.Toolkit.Demo.Views
             set
             {
                 this.color = value;
+                
+                if (this.PropertyChanged != null)
+                {
+                    this.PropertyChanged(this, new PropertyChangedEventArgs("Color"));
+                }
             }
         }
 

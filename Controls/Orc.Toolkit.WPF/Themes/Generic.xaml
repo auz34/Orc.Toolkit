@@ -1282,7 +1282,7 @@
                                                                     Converter={StaticResource BooleanToVisibilityConverter}}" />
                                             <Ellipse Width="14" Height="14" Grid.Column="1">
                                                 <Ellipse.Fill>
-                                                    <SolidColorBrush Color="{Binding Color}" />
+                                                    <SolidColorBrush Color="{Binding Color, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Ellipse.Fill>
                                             </Ellipse>
                                             <TextBlock Text="{Binding Description}" Grid.Column="2"/>
@@ -1298,6 +1298,11 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+
+                            <Popup Placement="Right" 
+                                   x:Name="PART_Popup" 
+                                   IsOpen="{Binding Path=IsColorSelecting, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                                   Focusable="False"/>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
