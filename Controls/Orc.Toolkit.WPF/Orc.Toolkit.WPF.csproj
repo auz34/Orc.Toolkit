@@ -50,6 +50,12 @@
     <Compile Include="..\Orc.Toolkit.SL\DropDownButton\DropDownButton.cs">
       <Link>DropDownButton\DropDownButton.cs</Link>
     </Compile>
+    <Compile Include="..\Orc.Toolkit.SL\ExtendedColorLegend\ExtendedColorLegend.cs">
+      <Link>ExtendedColorLegend\ExtendedColorLegend.cs</Link>
+    </Compile>
+    <Compile Include="..\Orc.Toolkit.SL\ExtendedColorLegend\IColorProvider.cs">
+      <Link>ExtendedColorLegend\IColorProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Orc.Toolkit.SL\FolderPicker\BrowseForFolderDialog.cs">
       <Link>FolderPicker\BrowseForFolderDialog.cs</Link>
     </Compile>
@@ -68,8 +74,12 @@
     <Compile Include="..\Orc.Toolkit.SL\PinnableTooltip\TooltipTimer.cs">
       <Link>PinnableTooltip\TooltipTimer.cs</Link>
     </Compile>
+    <Compile Include="..\Orc.Toolkit.SL\WatermarkTextBox\WatermarkTextBox.cs">
+      <Link>WatermarkTextBox\WatermarkTextBox.cs</Link>
+    </Compile>
     <Compile Include="ColorPicker\ColorChangedEventArgs.cs" />
     <Compile Include="ColorPicker\PredefinedColor.cs" />
+    <Compile Include="ExtendedColorLegend\Commands\ExtendedColorLegendCommands.cs" />
     <Compile Include="PrintingCanvas\CanvasToPrint.cs" />
     <Compile Include="ColorPicker\ColorBoard.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
@@ -115,7 +125,11 @@
       <Link>Themes\Images\pin.png</Link>
     </Resource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="..\Orc.Toolkit.SL\Themes\Images\ClearFilter16.png">
+      <Link>Themes\Images\ClearFilter16.png</Link>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
