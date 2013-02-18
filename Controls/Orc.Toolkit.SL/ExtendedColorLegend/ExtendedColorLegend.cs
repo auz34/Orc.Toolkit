@@ -8,18 +8,18 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Orc.Toolkit
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Windows;
-    using System.Windows.Controls;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Controls.Primitives;
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
-
     using Orc.Toolkit.Commands;
 
     /// <summary>
@@ -34,7 +34,7 @@ namespace Orc.Toolkit
         /// <summary>
         /// Property for colors list
         /// </summary>
-        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IColorProvider>), typeof(ExtendedColorLegend), new PropertyMetadata(null));
+        public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IColorProvider>), typeof(ExtendedColorLegend), new PropertyMetadata(null, OnItemsSourceChanged));
 
         /// <summary>
         /// Property for colors list
@@ -46,7 +46,7 @@ namespace Orc.Toolkit
         /// </summary>
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(
             "SelectedColorItems",
-            typeof(ObservableCollection<IColorProvider>),
+            typeof(IEnumerable<IColorProvider>),
             typeof(ExtendedColorLegend),
             new PropertyMetadata(null));
 
@@ -63,6 +63,11 @@ namespace Orc.Toolkit
             typeof(bool),
             typeof(ExtendedColorLegend),
             new PropertyMetadata(false, OnIsColorSelectingPropertyChanged));
+
+        /// <summary>
+        /// Property indicating whether search is performing using regex or not
+        /// </summary>
+        public static readonly DependencyProperty UseRegexFilteringProperty = DependencyProperty.Register("UseRegexFiltering", typeof(bool), typeof(ExtendedColorLegend), new PropertyMetadata(true));
 
         /// <summary>
         /// The current color property.
@@ -171,7 +176,7 @@ namespace Orc.Toolkit
         {
             #if (!SILVERLIGHT)
             CommandBindings.Add(
-                new CommandBinding(Commands.ExtendedColorLegendCommands.ClearFilter, this.ClearFilter, this.CanClearFilter));
+                new CommandBinding(ExtendedColorLegendCommands.ClearFilter, this.ClearFilter, this.CanClearFilter));
             #else
             this.ClearFilterCommand = new DelegateCommand(o => this.Filter = string.Empty, o => string.IsNullOrEmpty(this.Filter));
             #endif
@@ -283,6 +288,22 @@ namespace Orc.Toolkit
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether regex is used when search is performed
+        /// </summary>
+        public bool UseRegexFiltering
+        {
+            get
+            {
+                return (bool)GetValue(UseRegexFilteringProperty);
+            }
+
+            set
+            {
+                this.SetValue(UseRegexFilteringProperty, value);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether user editing current color
         /// </summary>
         public Color EditingColor
@@ -360,6 +381,7 @@ namespace Orc.Toolkit
             {
                 return (string)this.GetValue(FilterWatermarkProperty);
             }
+
             set
             {
                 this.SetValue(FilterWatermarkProperty, value);
@@ -369,11 +391,11 @@ namespace Orc.Toolkit
         /// <summary>
         /// Gets or sets list of selected items
         /// </summary>
-        public ObservableCollection<IColorProvider> SelectedColorItems
+        public IEnumerable<IColorProvider> SelectedColorItems
         {
             get
             {
-                return (ObservableCollection<IColorProvider>)this.GetValue(SelectedItemsProperty);
+                return (IEnumerable<IColorProvider>)this.GetValue(SelectedItemsProperty);
             }
 
             set
@@ -397,19 +419,21 @@ namespace Orc.Toolkit
             {
                 this.listBox.SelectionChanged += (sender, args) => { this.SelectedColorItems = this.GetSelectedList(); };
                 #if (!SILVERLIGHT)
-                this.listBox.MouseDoubleClick += new MouseButtonEventHandler(this.ListBoxMouseDoubleClick);
+                this.listBox.MouseDoubleClick += this.ListBoxMouseDoubleClick;
                 #endif
             }
 
             this.colorBoard = new ColorBoard();
-            // colorBoard.SizeChanged += colorBoard_SizeChanged;
-            this.popup.Child = this.colorBoard;
+            if (this.popup != null)
+            {
+                this.popup.Child = this.colorBoard;
+            }
 
             var b = new Binding("Color");
             b.Mode = BindingMode.TwoWay;
             b.Source = this.colorBoard;
             this.SetBinding(EditingColorProperty, b);
-            this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
+            this.colorBoard.DoneClicked += this.ColorBoardDoneClicked;
         }
 
         /// <summary>
@@ -427,6 +451,20 @@ namespace Orc.Toolkit
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// handler for rebinding ItemsSource property
+        /// </summary>
+        /// <param name="o">the dependency object</param>
+        /// <param name="e">event params</param>
+        private static void OnItemsSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            ExtendedColorLegend extendedColorLegend = o as ExtendedColorLegend;
+            if (extendedColorLegend != null)
+            {
+                extendedColorLegend.ItemsSource = (IEnumerable<IColorProvider>)e.NewValue;
+            }
         }
 
         /// <summary>
@@ -455,11 +493,13 @@ namespace Orc.Toolkit
         /// </param>
         private static void OnIsColorSelectingPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var cp = (ExtendedColorLegend)d;
-            if (cp == null)
-            {
-                return;
-            }
+        }
+
+        private string ConstructWildcardRegex(string pattern)
+        {
+            return "^" + Regex.Escape(pattern).
+                       Replace(@"\*", ".*").
+                       Replace(@"\?", ".") + "$";
         }
 
         /// <summary>
@@ -475,10 +515,25 @@ namespace Orc.Toolkit
                 return items;
             }
 
-            Regex regex = new Regex(filter);
-            return items.Where(cp => regex.IsMatch(cp.Description));
-        }
+            Regex regex = null;
+            try
+            {
+                if (this.UseRegexFiltering)
+                {
+                    regex = new Regex(filter);
+                }
+                else
+                {
+                    regex = new Regex(this.ConstructWildcardRegex(filter));
+                }
 
+                return items.Where(cp => regex.IsMatch(cp.Description));
+            }
+            catch (Exception exception)
+            {
+                return items;
+            }
+        }
 
         /// <summary>
         /// Process filter changed event
@@ -493,14 +548,24 @@ namespace Orc.Toolkit
         #if (!SILVERLIGHT)
         #region Commands
 
+        /// <summary>
+        /// Clears filter
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The event params</param>
         private void ClearFilter(object sender, ExecutedRoutedEventArgs e)
         {
             this.Filter = string.Empty;
         }
 
+        /// <summary>
+        /// Shows if clear filter command can be executed
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">The event params</param>
         private void CanClearFilter(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !string.IsNullOrEmpty(Filter);
+            e.CanExecute = !string.IsNullOrEmpty(this.Filter);
         }
 
         #endregion //Commands
@@ -546,8 +611,8 @@ namespace Orc.Toolkit
             this.EditingColor = colorProvider.Color;
             this.currentColorProvider = colorProvider;
             this.IsColorSelecting = true;
-
         }
+
         #endif
 
         /// <summary>
@@ -559,7 +624,7 @@ namespace Orc.Toolkit
         /// <param name="e">
         /// The e.
         /// </param>
-        private void colorBoard_DoneClicked(object sender, RoutedEventArgs e)
+        private void ColorBoardDoneClicked(object sender, RoutedEventArgs e)
         {
             this.EditingColor = this.colorBoard.Color;
             this.popup.IsOpen = false;
