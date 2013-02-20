@@ -1,42 +1,72 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DropDownButton.cs" company="ORC">
+//   MS-PL
+// </copyright>
+// <summary>
+//   The drop down button.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Orc.Toolkit
 {
+    using System;
+    using System.Net;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
+    using System.Windows.Documents;
+    using System.Windows.Ink;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Media.Animation;
+    using System.Windows.Shapes;
+
+    /// <summary>
+    /// The drop down button.
+    /// </summary>
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     [TemplatePart(Name = "PART_ToggleDropDown", Type = typeof(ToggleButton))]
     [TemplatePart(Name = "PART_ContentPresenter", Type = typeof(FrameworkElement))]
     public class DropDownButton : HeaderedContentControl
     {
-        FrameworkElement contentPresenter;
-        Popup popup;
-        ToggleButton button;
+        /// <summary>
+        /// The content presenter.
+        /// </summary>
+        private FrameworkElement contentPresenter;
 
+        /// <summary>
+        /// The popup.
+        /// </summary>
+        private Popup popup;
+
+        /// <summary>
+        /// The button.
+        /// </summary>
+        private ToggleButton button;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DropDownButton"/> class.
+        /// </summary>
         public DropDownButton()
         {
-            this.DefaultStyleKey = typeof(DropDownButton);            
+            this.DefaultStyleKey = typeof(DropDownButton);
         }
 
         #region OVERRIDE
+
+        /// <summary>
+        /// The on apply template.
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            button = (ToggleButton)GetTemplateChild("PART_ToggleDropDown");
-            popup = (Popup)GetTemplateChild("PART_Popup");
-            contentPresenter = (FrameworkElement)GetTemplateChild("PART_ContentPresenter");
+            this.button = (ToggleButton)this.GetTemplateChild("PART_ToggleDropDown");
+            this.popup = (Popup)this.GetTemplateChild("PART_Popup");
+            this.contentPresenter = (FrameworkElement)this.GetTemplateChild("PART_ContentPresenter");
 
-            this.SizeChanged += DropDownButton_SizeChanged;
+            this.SizeChanged += this.DropDownButton_SizeChanged;
 
-            #if (!SILVERLIGHT)
+#if (!SILVERLIGHT)
             if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
                 Window window = Window.GetWindow(this);
@@ -45,17 +75,34 @@ namespace Orc.Toolkit
                 LayoutUpdated += DropDownButton_LayoutUpdated;
             }
             #endif
-        }        
+        }
+
         #endregion
 
         #region DP
+
+        /// <summary>
+        /// Gets or sets the popup placement.
+        /// </summary>
         public PlacementMode PopupPlacement
         {
-            get { return (PlacementMode)GetValue(PopupPlacementProperty); }
-            set { SetValue(PopupPlacementProperty, value); }
+            get
+            {
+                return (PlacementMode)this.GetValue(PopupPlacementProperty);
+            }
+
+            set
+            {
+                this.SetValue(PopupPlacementProperty, value);
+            }
         }
+
+        /// <summary>
+        /// The popup placement property.
+        /// </summary>
         public static readonly DependencyProperty PopupPlacementProperty =
-           DependencyProperty.Register("PopupPlacement", typeof(PlacementMode), typeof(DropDownButton), new PropertyMetadata(PlacementMode.Bottom));
+            DependencyProperty.Register("PopupPlacement", typeof(PlacementMode), typeof(DropDownButton), new PropertyMetadata(PlacementMode.Bottom));
+
         #endregion
 
         #region private
@@ -89,7 +136,16 @@ namespace Orc.Toolkit
         }
 #endif
 
-        void DropDownButton_SizeChanged(object sender, SizeChangedEventArgs e)
+        /// <summary>
+        /// The drop down button_ size changed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void DropDownButton_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 #if (SILVERLIGHT)
             if (this.PopupPlacement == PlacementMode.Bottom)
@@ -111,6 +167,7 @@ namespace Orc.Toolkit
             {
                 this.popup.HorizontalOffset = -1 * this.contentPresenter.ActualWidth;
             }
+
 #endif
 #if(!SILVERLIGHT)
             if (popup != null)

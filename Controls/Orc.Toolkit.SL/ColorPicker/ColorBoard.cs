@@ -6,7 +6,6 @@
 //   The color board.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Orc.Toolkit
 {
     using System.Collections.Generic;
@@ -51,14 +50,14 @@ namespace Orc.Toolkit
         private SolidColorBrush brushColor;
 
         /// <summary>
-        /// The button done.
-        /// </summary>
-        private Button buttonDone;
-
-        /// <summary>
         /// The button cancel.
         /// </summary>
         private Button buttonCancel;
+
+        /// <summary>
+        /// The button done.
+        /// </summary>
+        private Button buttonDone;
 
         /// <summary>
         /// The canvas hsv.
@@ -239,12 +238,12 @@ namespace Orc.Toolkit
         /// <summary>
         /// The done clicked.
         /// </summary>
-        public event RoutedEventHandler DoneClicked;
+        public event RoutedEventHandler CancelClicked;
 
         /// <summary>
         /// The done clicked.
         /// </summary>
-        public event RoutedEventHandler CancelClicked;
+        public event RoutedEventHandler DoneClicked;
 
         #endregion
 
@@ -378,6 +377,17 @@ namespace Orc.Toolkit
         }
 
         /// <summary>
+        /// The on cancel clicked.
+        /// </summary>
+        public void OnCancelClicked()
+        {
+            if (this.CancelClicked != null)
+            {
+                this.CancelClicked(this, new RoutedEventArgs());
+            }
+        }
+
+        /// <summary>
         /// The on done clicked.
         /// </summary>
         public void OnDoneClicked()
@@ -402,17 +412,6 @@ namespace Orc.Toolkit
             if (this.DoneClicked != null)
             {
                 this.DoneClicked(this, new RoutedEventArgs());
-            }
-        }
-
-        /// <summary>
-        /// The on cancel clicked.
-        /// </summary>
-        public void OnCancelClicked()
-        {
-            if (this.CancelClicked != null)
-            {
-                this.CancelClicked(this, new RoutedEventArgs());
             }
         }
 
@@ -609,24 +608,36 @@ namespace Orc.Toolkit
 
                 double ellipseX = 0;
                 if (point.X < 0)
+                {
                     ellipseX = 0 - this.ellipseHSV.ActualWidth / 2;
+                }
                 else
                 {
-                    if (point.X > canvasHSV.ActualWidth)
-                        ellipseX = canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    if (point.X > this.canvasHSV.ActualWidth)
+                    {
+                        ellipseX = this.canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    }
                     else
+                    {
                         ellipseX = point.X - this.ellipseHSV.ActualWidth / 2;
+                    }
                 }
 
                 double ellipseY = 0;
                 if (point.Y < 0)
+                {
                     ellipseY = 0 - this.ellipseHSV.ActualHeight / 2;
+                }
                 else
                 {
-                    if (point.Y > canvasHSV.ActualHeight)
-                        ellipseY = canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    if (point.Y > this.canvasHSV.ActualHeight)
+                    {
+                        ellipseY = this.canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    }
                     else
+                    {
                         ellipseY = point.Y - this.ellipseHSV.ActualHeight / 2;
+                    }
                 }
 
                 this.ellipseHSV.SetValue(Canvas.LeftProperty, ellipseX);
@@ -801,20 +812,6 @@ namespace Orc.Toolkit
         }
 
         /// <summary>
-        /// The button done_ click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void buttonDone_Click(object sender, RoutedEventArgs e)
-        {
-            this.OnDoneClicked();
-        }
-
-        /// <summary>
         /// The button cancel_ click.
         /// </summary>
         /// <param name="sender">
@@ -826,6 +823,20 @@ namespace Orc.Toolkit
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
         {
             this.OnCancelClicked();
+        }
+
+        /// <summary>
+        /// The button done_ click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void buttonDone_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnDoneClicked();
         }
 
         /// <summary>

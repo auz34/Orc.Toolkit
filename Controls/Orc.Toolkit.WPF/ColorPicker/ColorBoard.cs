@@ -611,24 +611,37 @@ namespace Orc.Toolkit
 
                 double ellipseX = 0;
                 if (point.X < 0)
+                {
                     ellipseX = 0 - this.ellipseHSV.ActualWidth / 2;
+                }
                 else
                 {
-                    if(point.X>canvasHSV.ActualWidth)
-                        ellipseX = canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    if (point.X > this.canvasHSV.ActualWidth)
+                    {
+                        ellipseX = this.canvasHSV.ActualWidth - this.ellipseHSV.ActualWidth / 2;
+                    }
                     else
+                    {
                         ellipseX = point.X - this.ellipseHSV.ActualWidth / 2;
+                    }
                 }
 
                 double ellipseY = 0;
+
                 if (point.Y < 0)
+                {
                     ellipseY = 0 - this.ellipseHSV.ActualHeight / 2;
+                }
                 else
                 {
-                    if (point.Y > canvasHSV.ActualHeight)
-                        ellipseY = canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    if (point.Y > this.canvasHSV.ActualHeight)
+                    {
+                        ellipseY = this.canvasHSV.ActualHeight - this.ellipseHSV.ActualHeight / 2;
+                    }
                     else
+                    {
                         ellipseY = point.Y - this.ellipseHSV.ActualHeight / 2;
+                    }
                 }
 
                 this.ellipseHSV.SetValue(Canvas.LeftProperty, ellipseX);

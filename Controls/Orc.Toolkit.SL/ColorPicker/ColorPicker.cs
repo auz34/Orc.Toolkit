@@ -179,7 +179,7 @@ namespace Orc.Toolkit
             this.colorBoard.SizeChanged += this.colorBoard_SizeChanged;
             this.popup.Child = this.colorBoard;
             this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
-            this.colorBoard.CancelClicked += colorBoard_CancelClicked;
+            this.colorBoard.CancelClicked += this.colorBoard_CancelClicked;
 
             var b = new Binding("Color");
             b.Mode = BindingMode.TwoWay;
