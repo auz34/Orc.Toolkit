@@ -1,17 +1,17 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="BrowseForFolderDialog.cs" company="ORC">
+// <copyright file="ExtendedColorLegend.cs" company="ORC">
 //   MS-PL
 // </copyright>
 // <summary>
 //   Commands for ExtendedColorLegend control.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
 namespace Orc.Toolkit
 {
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Windows;
@@ -429,9 +429,8 @@ namespace Orc.Toolkit
                 this.popup.Child = this.colorBoard;
             }
 
-            var b = new Binding("Color");
-            b.Mode = BindingMode.TwoWay;
-            b.Source = this.colorBoard;
+            var b = new Binding("Color") { Mode = BindingMode.TwoWay, Source = this.colorBoard };
+            
             this.SetBinding(EditingColorProperty, b);
             this.colorBoard.DoneClicked += this.ColorBoardDoneClicked;
         }
@@ -495,11 +494,14 @@ namespace Orc.Toolkit
         {
         }
 
+        /// <summary>
+        /// Construct wildcard regex for case when regex is disable
+        /// </summary>
+        /// <param name="pattern">the search string</param>
+        /// <returns>regex pattern</returns>
         private string ConstructWildcardRegex(string pattern)
         {
-            return "^" + Regex.Escape(pattern).
-                       Replace(@"\*", ".*").
-                       Replace(@"\?", ".") + "$";
+            return "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
         }
 
         /// <summary>
@@ -514,22 +516,13 @@ namespace Orc.Toolkit
             {
                 return items;
             }
-
-            Regex regex = null;
+            
             try
             {
-                if (this.UseRegexFiltering)
-                {
-                    regex = new Regex(filter);
-                }
-                else
-                {
-                    regex = new Regex(this.ConstructWildcardRegex(filter));
-                }
-
+                Regex regex = this.UseRegexFiltering ? new Regex(filter) : new Regex(this.ConstructWildcardRegex(filter));
                 return items.Where(cp => regex.IsMatch(cp.Description));
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return items;
             }
