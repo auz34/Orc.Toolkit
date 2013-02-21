@@ -44,6 +44,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Orc.Toolkit.SL\Behaviours\MultiSelectorBehaviour.cs">
+      <Link>Behaviours\MultiSelectorBehaviour.cs</Link>
+    </Compile>
     <Compile Include="..\Orc.Toolkit.SL\Commands\DelegateCommand.cs">
       <Link>Commands\DelegateCommand.cs</Link>
     </Compile>
@@ -130,6 +133,7 @@
       <Link>Themes\Images\ClearFilter16.png</Link>
     </Resource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
