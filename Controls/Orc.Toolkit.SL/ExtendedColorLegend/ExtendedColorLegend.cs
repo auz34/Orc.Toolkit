@@ -575,6 +575,7 @@ namespace Orc.Toolkit
                 return;
             }
 
+            this.currentColorProvider = null;
             var elem = (UIElement)this.InputHitTest(e.GetPosition(this));
             ListBoxItem clickedItem = null;
 
