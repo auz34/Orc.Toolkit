@@ -1027,7 +1027,8 @@
 											<ListBox x:Name="RecentColorsGrid" HorizontalAlignment="Stretch"
 											         HorizontalContentAlignment="Center" BorderThickness="0"
 											         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-											         ScrollViewer.VerticalScrollBarVisibility="Disabled">
+											         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                     Background="Transparent">
 												<ListBox.ItemsPanel>
 													<ItemsPanelTemplate>
 														<local:WrapPanel Width="160" />
