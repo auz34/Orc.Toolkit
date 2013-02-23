@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviours\MultiSelectorBehaviour.cs" />
     <Compile Include="ColorPicker\ColorChangedEventArgs.cs" />
     <Compile Include="ColorPicker\PredefinedColor.cs" />
     <Compile Include="DropDownButton\DropDownButton.cs" />

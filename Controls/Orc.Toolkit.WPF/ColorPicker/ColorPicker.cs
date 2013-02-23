@@ -181,7 +181,7 @@ namespace Orc.Toolkit
             // colorBoard.SizeChanged += colorBoard_SizeChanged;
             this.popup.Child = this.colorBoard;
             this.colorBoard.DoneClicked += this.colorBoard_DoneClicked;
-            this.colorBoard.CancelClicked += colorBoard_CancelClicked;
+            this.colorBoard.CancelClicked += this.colorBoard_CancelClicked;
 
             var b = new Binding("Color");
             b.Mode = BindingMode.TwoWay;
@@ -191,9 +191,9 @@ namespace Orc.Toolkit
             this.KeyDown += this.ColorPicker_KeyDown;
 
             Window window = Window.GetWindow(this);
-            window.LocationChanged += window_LocationChanged;
-            window.SizeChanged += window_SizeChanged;
-            LayoutUpdated += DropDownButton_LayoutUpdated;
+            window.LocationChanged += this.window_LocationChanged;
+            window.SizeChanged += this.window_SizeChanged;
+            LayoutUpdated += this.DropDownButton_LayoutUpdated;
         }
         
         #endregion
