@@ -26,13 +26,13 @@ namespace Orc.Toolkit
     /// </summary>
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     [TemplatePart(Name = "PART_ToggleDropDown", Type = typeof(ToggleButton))]
-    [TemplatePart(Name = "PART_ContentPresenter", Type = typeof(FrameworkElement))]
+    [TemplatePart(Name = "PART_Content", Type = typeof(ContentControl))]
     public class DropDownButton : HeaderedContentControl
     {
         /// <summary>
-        /// The content presenter.
+        /// The content.
         /// </summary>
-        private FrameworkElement contentPresenter;
+        private ContentControl content;
 
         /// <summary>
         /// The popup.
@@ -54,36 +54,64 @@ namespace Orc.Toolkit
 
         #region OVERRIDE
 
-        /// <summary>
-        /// The on apply template.
-        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             this.button = (ToggleButton)this.GetTemplateChild("PART_ToggleDropDown");
             this.popup = (Popup)this.GetTemplateChild("PART_Popup");
-            this.contentPresenter = (FrameworkElement)this.GetTemplateChild("PART_ContentPresenter");
-
+            this.content = (ContentControl)this.GetTemplateChild("PART_Content");
+                        
             this.SizeChanged += this.DropDownButton_SizeChanged;
+
+#if(SILVERLIGHT)
+            UIElement root = Application.Current.RootVisual;
+            if (root != null)
+            {
+                root.MouseLeftButtonDown += (s, ee) =>
+                {
+                    if (popup.IsOpen)
+                        popup.IsOpen = false;
+                };
+            }
+#endif
 
 #if (!SILVERLIGHT)
             if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             {
-                Window window = Window.GetWindow(this);
+                System.Windows.Window window = System.Windows.Window.GetWindow(this);
                 window.LocationChanged += window_LocationChanged;
                 window.SizeChanged += window_SizeChanged;
                 LayoutUpdated += DropDownButton_LayoutUpdated;
             }
-            #endif
+
+            popup.Opened += popup_Opened;
+            popup.IsKeyboardFocusWithinChanged += popup_IsKeyboardFocusWithinChanged;
+            FindTopLevelElement(popup).MouseDown += Outside_MouseDown;
+#endif
         }
+
+        
+
+#if (!SILVERLIGHT)
+        void Outside_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (popup.IsOpen)
+            {
+                Point p = e.GetPosition(popup);
+                if (!new Rect(0, 0, (popup.Child as FrameworkElement).ActualWidth, (popup.Child as FrameworkElement).ActualHeight).Contains(p))
+                    popup.IsOpen = false;
+            }
+        }
+#endif
+
+
+
 
         #endregion
 
         #region DP
 
-        /// <summary>
-        /// Gets or sets the popup placement.
-        /// </summary>
+#if(SILVERLIGHT)
         public PlacementMode PopupPlacement
         {
             get
@@ -96,18 +124,38 @@ namespace Orc.Toolkit
                 this.SetValue(PopupPlacementProperty, value);
             }
         }
-
-        /// <summary>
-        /// The popup placement property.
-        /// </summary>
         public static readonly DependencyProperty PopupPlacementProperty =
             DependencyProperty.Register("PopupPlacement", typeof(PlacementMode), typeof(DropDownButton), new PropertyMetadata(PlacementMode.Bottom));
-
+#endif
         #endregion
 
         #region private
 
 #if (!SILVERLIGHT)
+        void popup_Opened(object sender, EventArgs e)
+        {
+            if (popup.Child != null)
+                popup.Child.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+            else
+                popup.Focus();
+        }
+        void popup_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (!popup.IsKeyboardFocusWithin)
+                popup.IsOpen = false;
+        }
+
+        private static FrameworkElement FindTopLevelElement(Popup popup)
+        {
+            FrameworkElement iterator, nextUp = popup;
+            do
+            {
+                iterator = nextUp;
+                nextUp = VisualTreeHelper.GetParent(iterator) as FrameworkElement;
+            } while (nextUp != null);
+            return iterator;
+        }
+
         void UpdatePopupPosition()
         {
             if (popup != null)
@@ -123,7 +171,7 @@ namespace Orc.Toolkit
         void window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             UpdatePopupPosition();
-        }        
+        }
 
         void window_LocationChanged(object sender, EventArgs e)
         {
@@ -136,15 +184,6 @@ namespace Orc.Toolkit
         }
 #endif
 
-        /// <summary>
-        /// The drop down button_ size changed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
         private void DropDownButton_SizeChanged(object sender, SizeChangedEventArgs e)
         {
 #if (SILVERLIGHT)
@@ -155,7 +194,7 @@ namespace Orc.Toolkit
 
             if (this.PopupPlacement == PlacementMode.Top)
             {
-                this.popup.VerticalOffset = -1 * this.contentPresenter.ActualHeight;
+                this.popup.VerticalOffset = -1 * this.content.ActualHeight;
             }
 
             if (this.PopupPlacement == PlacementMode.Right)
@@ -165,7 +204,7 @@ namespace Orc.Toolkit
 
             if (this.PopupPlacement == PlacementMode.Left)
             {
-                this.popup.HorizontalOffset = -1 * this.contentPresenter.ActualWidth;
+                this.popup.HorizontalOffset = -1 * this.content.ActualWidth;
             }
 
 #endif

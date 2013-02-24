@@ -14,7 +14,10 @@
         <orctk:DropDownButton Header="Header" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border Width="200" Height="200" Background="#ececec" BorderBrush="#cecece" BorderThickness="1">
                 <Border BorderThickness="1" BorderBrush="White">
-                    <TextBox Width="100" Text="Content" VerticalAlignment="Center" />
+                    <Grid>
+                        <TextBox Width="100" Text="Content" VerticalAlignment="Center" />
+                        <TextBox Width="100" Text="Content" VerticalAlignment="Bottom" />
+                    </Grid>
                 </Border>
             </Border>
         </orctk:DropDownButton>
