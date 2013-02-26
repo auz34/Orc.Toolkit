@@ -1246,7 +1246,7 @@
                             BorderThickness="1">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition x:Name="toolsContainerRow" Height="30" />
+                                <RowDefinition x:Name="toolsContainerRow" Height="33" />
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <Grid x:Name="toolsContainer" Grid.Row="0" Margin="4,4,4,4" Background="#FFCED4DF"

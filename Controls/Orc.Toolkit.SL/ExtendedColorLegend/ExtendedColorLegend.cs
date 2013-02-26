@@ -418,6 +418,8 @@ namespace Orc.Toolkit
             if (this.listBox != null)
             {
                 this.listBox.SelectionChanged += (sender, args) => { this.SelectedColorItems = this.GetSelectedList(); };
+                this.listBox.SelectionMode = SelectionMode.Extended;
+
                 #if (!SILVERLIGHT)
                 this.listBox.MouseDoubleClick += this.ListBoxMouseDoubleClick;
                 #endif
@@ -433,6 +435,7 @@ namespace Orc.Toolkit
             
             this.SetBinding(EditingColorProperty, b);
             this.colorBoard.DoneClicked += this.ColorBoardDoneClicked;
+            this.colorBoard.CancelClicked += this.ColorBoardCancelClicked;
         }
 
         /// <summary>
@@ -441,9 +444,10 @@ namespace Orc.Toolkit
         /// <returns>
         /// The <see cref="ObservableCollection"/>.
         /// </returns>
-        public ObservableCollection<IColorProvider> GetSelectedList()
+        public IEnumerable<IColorProvider> GetSelectedList()
         {
             var result = new ObservableCollection<IColorProvider>();
+
             foreach (object item in this.listBox.SelectedItems)
             {
                 result.Add(item as IColorProvider);
@@ -459,7 +463,8 @@ namespace Orc.Toolkit
         /// <param name="e">event params</param>
         private static void OnItemsSourceChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
-            ExtendedColorLegend extendedColorLegend = o as ExtendedColorLegend;
+            var extendedColorLegend = o as ExtendedColorLegend;
+
             if (extendedColorLegend != null)
             {
                 extendedColorLegend.ItemsSource = (IEnumerable<IColorProvider>)e.NewValue;
@@ -501,7 +506,14 @@ namespace Orc.Toolkit
         /// <returns>regex pattern</returns>
         private string ConstructWildcardRegex(string pattern)
         {
-            return "^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
+            // Need to escape backslash for date formats.
+            pattern = pattern.Replace(@"\", @"\\");
+
+            // Always add a wildcard at the end of the pattern
+            pattern = pattern.TrimEnd('*') + "*";
+
+            // Make it case insensitive by default
+            return "(?i)^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$";
         }
 
         /// <summary>
@@ -510,8 +522,9 @@ namespace Orc.Toolkit
         /// <returns>filtered items</returns>
         protected IEnumerable<IColorProvider> GetFilteredItems()
         {
-            IEnumerable<IColorProvider> items = (IEnumerable<IColorProvider>)GetValue(ItemsSourceProperty);
-            string filter = (string)GetValue(FilterProperty);
+            var items = (IEnumerable<IColorProvider>)GetValue(ItemsSourceProperty);
+            var filter = (string)GetValue(FilterProperty);
+
             if ((items == null) || string.IsNullOrEmpty(filter))
             {
                 return items;
@@ -621,6 +634,20 @@ namespace Orc.Toolkit
         private void ColorBoardDoneClicked(object sender, RoutedEventArgs e)
         {
             this.EditingColor = this.colorBoard.Color;
+            this.popup.IsOpen = false;
+        }
+
+        /// <summary>
+        /// The color board_ cancel clicked.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ColorBoardCancelClicked(object sender, RoutedEventArgs e)
+        {
             this.popup.IsOpen = false;
         }
     }
