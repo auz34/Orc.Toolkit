@@ -105,7 +105,7 @@ namespace Orc.Toolkit
         /// Property for filter watermark
         /// </summary>
         public static readonly DependencyProperty FilterWatermarkProperty = DependencyProperty.Register("FilterWatermark", typeof(string), typeof(ExtendedColorLegend), new UIPropertyMetadata("Search"));
-        
+
         #else
         /// <summary>
         /// Property indicating whether search box is shown or not
@@ -432,7 +432,7 @@ namespace Orc.Toolkit
             }
 
             var b = new Binding("Color") { Mode = BindingMode.TwoWay, Source = this.colorBoard };
-            
+
             this.SetBinding(EditingColorProperty, b);
             this.colorBoard.DoneClicked += this.ColorBoardDoneClicked;
             this.colorBoard.CancelClicked += this.ColorBoardCancelClicked;
@@ -506,9 +506,6 @@ namespace Orc.Toolkit
         /// <returns>regex pattern</returns>
         private string ConstructWildcardRegex(string pattern)
         {
-            // Need to escape backslash for date formats.
-            pattern = pattern.Replace(@"\", @"\\");
-
             // Always add a wildcard at the end of the pattern
             pattern = pattern.TrimEnd('*') + "*";
 
@@ -529,7 +526,7 @@ namespace Orc.Toolkit
             {
                 return items;
             }
-            
+
             try
             {
                 Regex regex = this.UseRegexFiltering ? new Regex(filter) : new Regex(this.ConstructWildcardRegex(filter));
