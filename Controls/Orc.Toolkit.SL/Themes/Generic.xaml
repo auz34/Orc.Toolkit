@@ -4,6 +4,36 @@
 	xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
 	xmlns:local="clr-namespace:Orc.Toolkit">
 
+    <Color x:Key="Color_Font_1">#000000</Color>
+    <SolidColorBrush x:Key="Brush_Font_1" Color="{StaticResource Color_Font_1}"/>
+
+    <Color x:Key="Color_Font_2">#303030</Color>
+    <SolidColorBrush x:Key="Brush_Font_2" Color="{StaticResource Color_Font_2}"/>
+
+
+
+    <Color x:Key="Color_Control_1">#eeeeee</Color>
+    <SolidColorBrush x:Key="Brush_Control_1" Color="{StaticResource Color_Control_1}"/>
+
+    <Color x:Key="Color_Control_2">#cccccc</Color>
+    <SolidColorBrush x:Key="Brush_Control_2" Color="{StaticResource Color_Control_2}"/>
+
+    <Color x:Key="Color_Control_3">#ffffff</Color>
+    <SolidColorBrush x:Key="Brush_Control_3" Color="{StaticResource Color_Control_3}"/>
+
+    <Color x:Key="Color_Control_4">#909090</Color>
+    <SolidColorBrush x:Key="Brush_Control_4" Color="{StaticResource Color_Control_4}"/>
+
+    <Color x:Key="Color_Control_5">#f5f5f5</Color>
+    <SolidColorBrush x:Key="Brush_Control_5" Color="{StaticResource Color_Control_5}"/>
+
+    <Color x:Key="Color_Highlight_1">#707070</Color>
+    <SolidColorBrush x:Key="Brush_Highlight_1" Color="{StaticResource Color_Highlight_1}"/>
+    <LinearGradientBrush x:Key="Brush_Highlight_2" StartPoint="0 0" EndPoint="1 0">
+        <GradientStop Color="{StaticResource Color_Highlight_1}" Offset="0.6"/>
+        <GradientStop Color="#00ffffff" Offset="1.0"/>
+    </LinearGradientBrush>
+    
 
 	<Style TargetType="local:FolderPicker">
 		<Setter Property="MinWidth" Value="30" />
@@ -1086,9 +1116,6 @@
     <Style TargetType="local:DropDownButton">
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
-        <Setter Property="IsTabStop" Value="True"/>
-        <Setter Property="MinWidth" Value="35"/>
-        <Setter Property="MinHeight" Value="19"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:DropDownButton">
@@ -1112,9 +1139,8 @@
                             <ColumnDefinition Width="14"/>
                         </Grid.ColumnDefinitions>
 
-                        <ToggleButton Grid.ColumnSpan="2" IsTabStop="False" ClickMode="Press" HorizontalContentAlignment="Stretch"
-                                      IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      x:Name="PART_ToggleDropDown">
+                        <ToggleButton x:Name="PART_ToggleDropDown" Grid.ColumnSpan="2" ClickMode="Press"
+                                      IsChecked="{Binding IsOpen, Mode=TwoWay, ElementName=PART_Popup}">
                             <ToggleButton.Content>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -1126,16 +1152,14 @@
                                       VerticalAlignment="Center" Stretch="None" Grid.Column="1" Width="5"/>
 
                                     <Grid>
-                                        <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Header}"/>
+                                        <ContentControl Content="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                             </ToggleButton.Content>
                         </ToggleButton>
 
-                        <Popup x:Name="PART_Popup" 
-                               IsOpen="{Binding Path=IsChecked, Mode=TwoWay, ElementName=PART_ToggleDropDown}">
-                            <ContentPresenter Content="{TemplateBinding Content}">
-                            </ContentPresenter>
+                        <Popup x:Name="PART_Popup" >
+                            <ContentControl x:Name="PART_Content" Content="{TemplateBinding Content}"/>
                         </Popup>
                     </Grid>
                 </ControlTemplate>
