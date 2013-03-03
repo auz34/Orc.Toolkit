@@ -18,6 +18,25 @@ All code is released under the MS-PL License unless stated otherwise.
 
 # Notes
 
+## Resources and buttons
+
+In order to use the buttons include this code in the App.xaml for your project
+
+    <Application x:Class="Rantt.DemoCsv.App"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 StartupUri="MainWindow.xaml">
+        <Application.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/Orc.Toolkit;component/Assets/Theme/Default/Main.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Application.Resources>
+    </Application>
+
+## Silverlight
+
 To run the Demo Silverlight project you will need elevated trust:
 
 1) Check "Require elevated trust when running in-browser" setting in your Silverlight project that uses the control
