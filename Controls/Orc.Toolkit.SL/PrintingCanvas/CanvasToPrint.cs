@@ -23,6 +23,24 @@ namespace Orc.Toolkit
     {
         #region Public Methods and Operators
 
+        public static BitmapSource SaveToPng(Canvas canvas1, Canvas canvas2, Canvas canvas3, Canvas canvas4)
+        {
+            var saveFileDialog1 = new SaveFileDialog();
+
+            saveFileDialog1.Filter = "png files (*.png)|*.png|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 1;
+
+            if (saveFileDialog1.ShowDialog() == true)
+            {
+                BitmapSource bs = CanvasToPrint.PrintToPngFile(
+                    canvas1, canvas2, canvas3, canvas4, saveFileDialog1.OpenFile());
+
+                return bs;
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// The print to png file.
         /// </summary>
