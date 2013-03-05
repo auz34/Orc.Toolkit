@@ -33,9 +33,189 @@
         <GradientStop Color="{StaticResource Color_Highlight_1}" Offset="0.6"/>
         <GradientStop Color="#00ffffff" Offset="1.0"/>
     </LinearGradientBrush>
+
+    <Color x:Key="Color_Hover">#FFf1f1f1</Color>
+    <Color x:Key="Color_MediumLight">#FFdddddd</Color>
+    <Color x:Key="Color_Medium">#FF888888</Color>
+    <Color x:Key="Color_Selection">#FF667ade</Color>
+    <SolidColorBrush x:Key="Brush_MediumColor" Color="{StaticResource Color_Medium}"/>
+
+
+    <!--STATUSBAR-->
+    <Color x:Key="Color_StatusBarBackground_TopDark">#939aa3</Color>
+    <Color x:Key="Color_StatusBarBackground_TopLight">#f7fafc</Color>
+    <Color x:Key="Color_StatusBarBackground_Light">#e6eaee</Color>
+    <Color x:Key="Color_StatusBarBackground_Dark">#b7bcc1</Color>
+    <Color x:Key="Color_StatusBarBackground_Bottom">#767573</Color>
+    <Color x:Key="Color_StatusBarBackground_Side">#767573</Color>
+
+    <Color x:Key="Color_Foreground">#3b3b5a</Color>
+    <Color x:Key="Color_Foreground_Disaled">#803b3b5a</Color>
+
+    <Color x:Key="Color_Separator_Dark">#75797d</Color>
+    <Color x:Key="Color_Separator_Light">#4075797d</Color>
+
+    <Color x:Key="Color_Separator_SideDark">#80ffffff</Color>
+    <Color x:Key="Color_Separator_SideLight">#50ffffff</Color>
+
+    <Color x:Key="Color_SizeGrip_Dark">#9da6b0</Color>
+    <Color x:Key="Color_SizeGrip_Light">#e6e9ed</Color>
+
+    <Color x:Key="HilightColor1">#edc756</Color>
+
+    <Color x:Key="Color_TextBackground">#fff</Color>
+    <Color x:Key="Color_ComboBoxDropDownBorder">#a7abb0</Color>
+    <Color x:Key="Color_ComboBoxBorder_Normal">#a7abb0</Color>
+
+    <Color x:Key="Color_ComboBoxArrow_Dark">#636567</Color>
+    <Color x:Key="Color_ComboBoxArrow_Light">#838587</Color>
+
+    <Color x:Key="Color_ButtonBorder">#7f8792</Color>
+    <Color x:Key="Color_Slider_Border">#7f8994</Color>
+    <Color x:Key="Color_Slider_Fill_Light">#fefefe</Color>
+    <Color x:Key="Color_Slider_Fill_Dark">#e2e5e8</Color>
+    <Color x:Key="Color_Slider_Fill_Dark1">#b4bac0</Color>
+    <Color x:Key="Color_Slider_Line_Dark">#9da6b0</Color>
+    <Color x:Key="Color_Slider_Line_Light">#e6e9ed</Color>
+    <Color x:Key="Color_Foreground_Light">#828487</Color>
+    <Color x:Key="Color_Foreground_Dark">#4c4e4f</Color>
+    <Color x:Key="Color_ButtonFill_Light">#fdfefe</Color>
+    <Color x:Key="Color_ButtonFill_Middle">#f7f9fb</Color>
+    <Color x:Key="Color_ButtonFill_Dark">#dee1e4</Color>
+
+
+    <SolidColorBrush x:Key="Brush_Foreground" Color="{StaticResource Color_Foreground}" />
+    <SolidColorBrush x:Key="Brush_Foreground_Disabled" Color="{StaticResource Color_Foreground_Disaled}" />
+
+    <SolidColorBrush x:Key="Brush_SizeGrip_Dark" Color="{StaticResource Color_SizeGrip_Dark}" />
+    <SolidColorBrush x:Key="Brush_SizeGrip_Light" Color="{StaticResource Color_SizeGrip_Light}" />
+
+    <SolidColorBrush x:Key="Brush_TextBackground" Color="{StaticResource Color_TextBackground}" />
+    <SolidColorBrush x:Key="Brush_ComboBoxDropDownBorder" Color="{StaticResource Color_ComboBoxDropDownBorder}" />
+    <SolidColorBrush x:Key="Brush_ComboBoxBorder_Normal" Color="{StaticResource Color_ComboBoxBorder_Normal}" />
+
+    <LinearGradientBrush x:Key="Brush_StatusBarBackground" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="{StaticResource Color_StatusBarBackground_Light}" Offset="0" />
+        <GradientStop Color="{StaticResource Color_StatusBarBackground_Dark}" Offset="1" />
+    </LinearGradientBrush>
+    <SolidColorBrush x:Key="Brush_StatusBarBckgroundTopDarkLine"
+	                 Color="{StaticResource Color_StatusBarBackground_TopDark}" />
+    <SolidColorBrush x:Key="Brush_StatusBarBckgroundTopLightLine"
+	                 Color="{StaticResource Color_StatusBarBackground_TopLight}" />
+
+    <LinearGradientBrush x:Key="Brush_Separator_Center" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="{StaticResource Color_Separator_Light}" Offset="0" />
+        <GradientStop Color="{StaticResource Color_Separator_Dark}" Offset="0.5" />
+        <GradientStop Color="{StaticResource Color_Separator_Light}" Offset="1" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="Brush_Separator_Side" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="{StaticResource Color_Separator_SideLight}" Offset="0" />
+        <GradientStop Color="{StaticResource Color_Separator_SideDark}" Offset="0.5" />
+        <GradientStop Color="{StaticResource Color_Separator_SideLight}" Offset="1" />
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Brush_ComboBoxArrow" StartPoint="1,1" EndPoint="0,0">
+        <GradientStop Color="{StaticResource Color_ComboBoxArrow_Dark}" Offset="0" />
+        <GradientStop Color="{StaticResource Color_ComboBoxArrow_Light}" Offset="1" />
+    </LinearGradientBrush>
+
+    <Style TargetType="local:LayoutTransformer">
+        <Setter Property="Foreground" Value="#FF000000"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:LayoutTransformer">
+                    <Grid x:Name="TransformRoot" Background="{TemplateBinding Background}">
+                        <ContentPresenter
+                            x:Name="Presenter"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Header_ToggleButton" TargetType="ToggleButton">
+        <Setter Property="Foreground" Value="{StaticResource Brush_Font_2}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Background="Transparent" Margin="{TemplateBinding Padding}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="lineHover"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="lineNormal"
+                                                                       Storyboard.TargetProperty="Visibility">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="4"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="lineHover" Background="{StaticResource Brush_Highlight_1}" Visibility="Collapsed"/>
+                        <Border x:Name="lineNormal" Background="{StaticResource Brush_Control_2}" Visibility="Visible"/>
+
+                        <ContentControl Content="{TemplateBinding Content}" Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="Pin_ToggleButton" TargetType="ToggleButton">
+        <Setter Property="MinHeight" Value="14"/>
+        <Setter Property="MinWidth" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource Brush_Font_1}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Grid Background="Transparent" Margin="{TemplateBinding Padding}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal"/>
+                                <VisualState Name="MouseOver">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BorderButton"
+                                                                       Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_Highlight_1}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                        <Border x:Name="BorderButton" Background="Transparent" >
+                            <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"
+                              Data="M0,5 H7 M7,0 V11 M8,3 H15 V8 H8 M8,4 H15" Stroke="{TemplateBinding Foreground}" 
+                                  RenderTransformOrigin="0.5 0.5"
+                                  StrokeThickness="1"  >
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-45"/>
+                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
 
-	<Style TargetType="local:FolderPicker">
+    <Style TargetType="local:FolderPicker">
 		<Setter Property="MinWidth" Value="30" />
 		<Setter Property="Template">
 			<Setter.Value>
@@ -158,19 +338,6 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-	<Color x:Key="Color_ButtonBorder">#7f8792</Color>
-	<Color x:Key="Color_Slider_Border">#7f8994</Color>
-	<Color x:Key="Color_Slider_Fill_Light">#fefefe</Color>
-	<Color x:Key="Color_Slider_Fill_Dark">#e2e5e8</Color>
-	<Color x:Key="Color_Slider_Fill_Dark1">#b4bac0</Color>
-	<Color x:Key="Color_Slider_Line_Dark">#9da6b0</Color>
-	<Color x:Key="Color_Slider_Line_Light">#e6e9ed</Color>
-	<Color x:Key="Color_Foreground_Light">#828487</Color>
-	<Color x:Key="Color_Foreground_Dark">#4c4e4f</Color>
-	<Color x:Key="Color_ButtonFill_Light">#fdfefe</Color>
-	<Color x:Key="Color_ButtonFill_Middle">#f7f9fb</Color>
-	<Color x:Key="Color_ButtonFill_Dark">#dee1e4</Color>
 
 	<Style TargetType="local:SliderPlusMinus">
 		<Setter Property="Margin" Value="16 0" />
@@ -343,7 +510,20 @@
 										</Setter.Value>
 									</Setter>
 								</Style>
-							</ResourceDictionary>
+							
+    <Style TargetType="local:Expander">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Expander">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
 						</Grid.Resources>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="auto" />
@@ -410,7 +590,20 @@
 												</Setter.Value>
 											</Setter>
 										</Style>
-									</ResourceDictionary>
+									
+    <Style TargetType="local:Expander">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Expander">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
 								</Grid.Resources>
 
 								<Grid.ColumnDefinitions>
@@ -1113,6 +1306,7 @@
 		</Setter>
 	</Style>
 
+    
     <Style TargetType="local:DropDownButton">
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
@@ -1152,7 +1346,7 @@
                                       VerticalAlignment="Center" Stretch="None" Grid.Column="1" Width="5"/>
 
                                     <Grid>
-                                        <ContentControl Content="{TemplateBinding Header}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <ContentControl Content="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                             </ToggleButton.Content>
@@ -1167,6 +1361,7 @@
         </Setter>
     </Style>
 
+    
     <Style TargetType="local:HeaderedContentControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -1182,12 +1377,55 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
                         </Border>
 
-                        <ContentControl Content="{TemplateBinding Header}"/>
-                        <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" 
+                        <ContentControl Content="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        <ContentControl Grid.Row="1" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" 
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Grid>
 
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="local:Expander">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Expander">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="HeaderBorder" Background="{StaticResource Brush_Control_1}" Grid.Row="1">
+                            <ToggleButton VerticalAlignment="Top" Margin="1" Content="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
+                                          Style="{StaticResource Header_ToggleButton}" RenderTransformOrigin="0.5 0.5"
+                                      IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.RenderTransform>
+                                    <RotateTransform Angle="-90"/>
+                                </ToggleButton.RenderTransform>
+                            </ToggleButton>
+                        </Border>
+
+                        <Grid x:Name="ContentPresenterGrid" Visibility="Collapsed">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Margin="0 0 0 1" Grid.ColumnSpan="2" Background="{StaticResource Brush_Control_1}"/>
+                            <ContentControl Content="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}" Margin="2"
+                                            HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+                            <ToggleButton Content="x" Grid.Column="1" Style="{StaticResource Pin_ToggleButton}" Margin="1"
+                                          IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ContentControl x:Name="contentPresenter" Content="{TemplateBinding Content}" Grid.Row="1" Grid.ColumnSpan="2"/>
+                        </Grid>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

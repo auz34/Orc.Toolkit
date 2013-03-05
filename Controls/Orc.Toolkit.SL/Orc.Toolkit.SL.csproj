@@ -61,8 +61,10 @@
     <Compile Include="ColorPicker\PredefinedColor.cs" />
     <Compile Include="DropDownButton\DropDownButton.cs" />
     <Compile Include="DropDownButton\HeaderedContentControl.cs" />
+    <Compile Include="Expander\Expander.cs" />
     <Compile Include="ExtendedColorLegend\ExtendedColorLegend.cs" />
     <Compile Include="ExtendedColorLegend\IColorProvider.cs" />
+    <Compile Include="Helpers\LayoutTransformer.cs" />
     <Compile Include="PrintingCanvas\CanvasToPrint.cs" />
     <Compile Include="ColorPicker\ColorBoard.cs" />
     <Compile Include="ColorPicker\ColorHelper.cs" />
@@ -91,6 +93,42 @@
     <Compile Include="WatermarkTextBox\WatermarkTextBox.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Assets\Theme\Default\Controls\DropDownButton\SettingsDropDownButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\Theme\Default\Controls\Expander\ExpanderToLeft.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\Theme\Default\Controls\StatusBar\ItemsPanelTemplate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Theme\Default\Controls\TabControl\MainTabControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Theme\Default\Controls\ToolBar\ToolBarButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\Theme\Default\Main.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Assets\Theme\Default\Shared\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Theme\Default\Shared\Controls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Assets\Theme\Default\Shared\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -102,6 +140,7 @@
   <ItemGroup>
     <Resource Include="Themes\Images\ClearFilter16.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
