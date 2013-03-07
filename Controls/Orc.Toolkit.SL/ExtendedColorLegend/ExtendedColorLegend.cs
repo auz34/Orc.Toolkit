@@ -27,9 +27,20 @@ namespace Orc.Toolkit
     /// </summary>
     [TemplatePart(Name = "PART_List", Type = typeof(ListBox))]
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
+    [TemplatePart(Name = "PART_UnselectAll", Type = typeof(ButtonBase))]
     public class ExtendedColorLegend : HeaderedContentControl
     {
         #region Dependency properties
+        
+        public string OperationColorAttribute
+        {
+            get { return (string)GetValue(OperationColorAttributeProperty); }
+            set { SetValue(OperationColorAttributeProperty, value); }
+        }
+        public static readonly DependencyProperty OperationColorAttributeProperty =
+            DependencyProperty.Register("OperationColorAttribute", typeof(string), typeof(ExtendedColorLegend), new PropertyMetadata(""));
+
+
 
         /// <summary>
         /// Property for colors list
@@ -75,7 +86,7 @@ namespace Orc.Toolkit
         public static readonly DependencyProperty EditingColorProperty = DependencyProperty.Register(
             "EditingColor", typeof(Color), typeof(ExtendedColorLegend), new PropertyMetadata(Colors.White));
 
-        #if(!SILVERLIGHT)
+#if(!SILVERLIGHT)
         /// <summary>
         /// Property indicating whether search box is shown or not
         /// </summary>
@@ -154,10 +165,20 @@ namespace Orc.Toolkit
         /// </summary>
         private Popup popup;
 
+            /// <summary>
+        /// The button color change
+        /// </summary>
+        private ButtonBase button;
+
         /// <summary>
         /// Item color of which is editing now
         /// </summary>
         private IColorProvider currentColorProvider;
+
+        /// <summary>
+        /// Change color command
+        /// </summary>
+        private ICommand changeColorCommand;
 
         /// <summary>
         /// Initializes static members of the <see cref="ExtendedColorLegend" /> class.
@@ -207,6 +228,7 @@ namespace Orc.Toolkit
             }
         }
 
+        
         /// <summary>
         /// Gets or sets a value indicating whether search box is shown or not
         /// </summary>
@@ -404,6 +426,36 @@ namespace Orc.Toolkit
             }
         }
 
+        /// <summary>
+        /// Gets or sets the color change command
+        /// </summary>
+        public ICommand ChangeColorCommand
+        {
+            get
+            {
+                return this.changeColorCommand ?? (this.changeColorCommand = new DelegateCommand(o =>
+                {
+                    if (!this.AllowColorEditing)
+                    {
+                        return;
+                    }
+
+                    this.currentColorProvider = null;
+                    var colorProvider = o as IColorProvider;
+
+                    if (colorProvider == null)
+                    {
+                        return;
+                    }
+
+                    this.EditingColor = colorProvider.Color;
+                    this.currentColorProvider = colorProvider;
+                    this.IsColorSelecting = true;
+
+                }, p => p != null));
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -414,15 +466,25 @@ namespace Orc.Toolkit
             base.OnApplyTemplate();
             this.listBox = (ListBox)this.GetTemplateChild("PART_List");
             this.popup = (Popup)this.GetTemplateChild("PART_Popup");
+            this.button = (ButtonBase)GetTemplateChild("PART_UnselectAll");
 
             if (this.listBox != null)
             {
                 this.listBox.SelectionChanged += (sender, args) => { this.SelectedColorItems = this.GetSelectedList(); };
                 this.listBox.SelectionMode = SelectionMode.Extended;
 
-                #if (!SILVERLIGHT)
-                this.listBox.MouseDoubleClick += this.ListBoxMouseDoubleClick;
-                #endif
+                //#if (!SILVERLIGHT)
+                //this.listBox.MouseDoubleClick += this.ListBoxMouseDoubleClick;
+                //#endif
+            }
+
+            if (button != null)
+            {
+                button.Click += (s, e) =>
+                    {
+                        if (listBox != null)
+                            listBox.SelectedIndex = -1;
+                    };
             }
 
             this.colorBoard = new ColorBoard();
