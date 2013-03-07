@@ -21,6 +21,6 @@
                 </Border>
             </Border>
         </orctk:DropDownButton>
-        <Expander Header="Test" ExpandDirection="Left" Grid.Column="1">Popup placement update</Expander>
+        <orctk:Expander Style="{StaticResource ExpanderToLeft}" Header="Test" ExpandDirection="Left" Grid.Column="1">Popup placement update</orctk:Expander>
     </Grid>
 </UserControl>

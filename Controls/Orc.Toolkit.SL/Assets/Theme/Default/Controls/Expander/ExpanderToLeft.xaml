@@ -13,8 +13,11 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:Expander">
                     <Grid>
+                        <Grid.Resources>
+                            <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+                        </Grid.Resources>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
@@ -28,7 +31,7 @@
                             </ToggleButton>
                         </Border>
 
-                        <Grid x:Name="ContentPresenterGrid" Visibility="Collapsed">
+                        <Grid x:Name="ContentPresenterGrid" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition Height="*"/>
