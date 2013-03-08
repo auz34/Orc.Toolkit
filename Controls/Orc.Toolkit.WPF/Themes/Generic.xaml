@@ -779,7 +779,7 @@
 
 											<Slider Name="SliderHSV" Grid.Column="1" Margin="0" Height="150" Focusable="False"
                                                         HorizontalAlignment="Stretch" IsDirectionReversed="True" Maximum="359" 
-                                                        SmallChange="1" Orientation="Vertical">
+                                                        SmallChange="1" Orientation="Vertical" IsMoveToPointEnabled="True">
 												<Slider.Background>
 													<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
 														<GradientStop Color="#FFFF0000" Offset="0.0" />
@@ -807,7 +807,7 @@
 													<ColumnDefinition Width="Auto"/>
 												</Grid.ColumnDefinitions>
 
-												<Slider Grid.Row="0" Grid.Column="0" x:Name="SliderA" Height="20" 
+                                                <Slider Grid.Row="0" Grid.Column="0" x:Name="SliderA" Height="20"  IsMoveToPointEnabled="True"
                                                          Orientation="Horizontal" Maximum="255" SmallChange="1" VerticalAlignment="Center">
 													<Slider.Background>
 														<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -817,7 +817,7 @@
 													</Slider.Background>
 												</Slider>
 
-												<Slider Grid.Row="1" Grid.Column="0" x:Name="SliderR" Height="20" 
+                                                <Slider Grid.Row="1" Grid.Column="0" x:Name="SliderR" Height="20" IsMoveToPointEnabled="True"
                                                         Orientation="Horizontal" Maximum="255" SmallChange="1" VerticalAlignment="Center">
 													<Slider.Background>
 														<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -827,7 +827,7 @@
 													</Slider.Background>
 												</Slider>
 
-												<Slider Grid.Row="2" Grid.Column="0" x:Name="SliderG" Height="20" 
+                                                <Slider Grid.Row="2" Grid.Column="0" x:Name="SliderG" Height="20" IsMoveToPointEnabled="True"
                                                         Orientation="Horizontal" Maximum="255" SmallChange="1" VerticalAlignment="Center">
 													<Slider.Background>
 														<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
@@ -837,7 +837,7 @@
 													</Slider.Background>
 												</Slider>
 
-												<Slider Grid.Row="3" Grid.Column="0" x:Name="SliderB" Height="20" 
+                                                <Slider Grid.Row="3" Grid.Column="0" x:Name="SliderB" Height="20" IsMoveToPointEnabled="True"
                                                         Orientation="Horizontal" Maximum="255" SmallChange="1" VerticalAlignment="Center">
 													<Slider.Background>
 														<LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
