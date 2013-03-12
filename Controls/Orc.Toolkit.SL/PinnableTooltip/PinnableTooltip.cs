@@ -69,6 +69,11 @@ namespace Orc.Toolkit
         private readonly Popup parentPopup;
 
         /// <summary>
+        ///     The is mouse over.
+        /// </summary>
+        private bool isMouseOver;
+
+        /// <summary>
         ///     The last size.
         /// </summary>
         private Size lastSize;
@@ -100,6 +105,24 @@ namespace Orc.Toolkit
             this.DefaultStyleKey = typeof(PinnableTooltip);
             this.parentPopup = new Popup { Child = this };
             this.SizeChanged += this.OnSizeChanged;
+            this.MouseEnter += PinnableTooltip_MouseEnter;
+            this.MouseLeave += PinnableTooltip_MouseLeave;
+        }
+
+        void PinnableTooltip_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            isMouseOver = false;
+            if (this.IsOpen && !this.IsPinned)
+            {
+                timer.StopAndReset();
+            }
+        }
+
+        void PinnableTooltip_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            isMouseOver = true;
+            if (this.IsTimerEnabled && !this.IsPinned)
+                timer.Stop();
         }
 
         #endregion
@@ -314,7 +337,7 @@ namespace Orc.Toolkit
         /// <param name="showDuration">
         /// The show duration.
         /// </param>
-        internal void SetupTimer(int initialShowDelay, int showDuration)
+        public void SetupTimer(int initialShowDelay, int showDuration)
         {
             if (this.timer != null)
             {
@@ -336,7 +359,7 @@ namespace Orc.Toolkit
         /// <summary>
         ///     The start timer.
         /// </summary>
-        internal void StartTimer()
+        public void StartTimer()
         {
             if (this.timer != null)
             {
@@ -347,7 +370,7 @@ namespace Orc.Toolkit
         /// <summary>
         ///     The stop timer.
         /// </summary>
-        internal void StopTimer()
+        public void StopTimer()
         {
             if (this.timer != null && this.IsTimerEnabled)
             {
@@ -835,7 +858,7 @@ namespace Orc.Toolkit
         /// </param>
         private void OnTimerStopped(object sender, EventArgs e)
         {
-            if (!this.IsPinned)
+            if (!this.IsPinned && !isMouseOver)
             {
                 this.IsOpen = false;
             }
