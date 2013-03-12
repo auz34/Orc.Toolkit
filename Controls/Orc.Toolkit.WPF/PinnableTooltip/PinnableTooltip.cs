@@ -116,6 +116,22 @@ namespace Orc.Toolkit
         {
             this.DefaultStyleKey = typeof(PinnableTooltip);
             this.SizeChanged += this.OnSizeChanged;
+            this.MouseEnter += PinnableTooltip_MouseEnter;
+            this.MouseLeave += PinnableTooltip_MouseLeave;
+        }
+
+        void PinnableTooltip_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (this.IsOpen && !this.IsPinned)
+            {
+                timer.StopAndReset();
+            }
+        }
+
+        void PinnableTooltip_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (this.IsTimerEnabled && !this.IsPinned)
+                timer.Stop();
         }
 
         #endregion
@@ -228,7 +244,7 @@ namespace Orc.Toolkit
 
             if (this.owner == null)
             {
-                return position;
+                return Mouse.GetPosition(null);
             }
 
             double horizontalOffset = this.HorizontalOffset;
@@ -367,7 +383,7 @@ namespace Orc.Toolkit
         /// <param name="showDuration">
         /// The show duration.
         /// </param>
-        internal void SetupTimer(int initialShowDelay, int showDuration)
+        public void SetupTimer(int initialShowDelay, int showDuration)
         {
             if (this.timer != null)
             {
@@ -389,7 +405,7 @@ namespace Orc.Toolkit
         /// <summary>
         ///     The start timer.
         /// </summary>
-        internal void StartTimer()
+        public void StartTimer()
         {
             if (this.timer != null)
             {
@@ -400,7 +416,7 @@ namespace Orc.Toolkit
         /// <summary>
         ///     The stop timer.
         /// </summary>
-        internal void StopTimer()
+        public void StopTimer()
         {
             if (this.timer != null && this.IsTimerEnabled)
             {
@@ -923,7 +939,7 @@ namespace Orc.Toolkit
         /// </param>
         private void OnTimerStopped(object sender, EventArgs e)
         {
-            if (!this.IsPinned)
+            if (!this.IsPinned && !IsMouseOver)
             {
                 this.IsOpen = false;
             }

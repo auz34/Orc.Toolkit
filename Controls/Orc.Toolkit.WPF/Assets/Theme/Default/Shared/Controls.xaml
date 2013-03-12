@@ -4,7 +4,7 @@
         <ResourceDictionary Source="Colors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="Header_ToggleButon" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="Header_ToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Foreground" Value="{StaticResource Brush_Font_2}"/>
@@ -43,7 +43,7 @@
         </Setter>
     </Style>
     
-    <Style x:Key="Pin_ToggleButon" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="Pin_ToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="MinHeight" Value="14"/>
@@ -53,6 +53,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Grid Background="Transparent" Margin="{TemplateBinding Padding}">
+                        <Grid.Resources>
+                            <TransformGroup x:Key="transform">
+                                <RotateTransform Angle="-45"/>
+                                <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
+                            </TransformGroup>
+                        </Grid.Resources>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
                                 <VisualState Name="Normal"/>
@@ -65,17 +71,29 @@
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
+                            <VisualStateGroup Name="CheckStates">
+                                <VisualState Name="Unchecked"/>
+                                <VisualState Name="Checked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="path"
+                                                                       Storyboard.TargetProperty="RenderTransform">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource transform}"/>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                
+                            </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
 
                         <Border x:Name="BorderButton" Background="Transparent" >
                             <Path HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="None"
                               Data="M0,5 H7 M7,0 V11 M8,3 H15 V8 H8 M8,4 H15" Stroke="{TemplateBinding Foreground}" 
-                                  RenderTransformOrigin="0.5 0.5"
+                                  RenderTransformOrigin="0.5 0.5" x:Name="path"
                                   StrokeThickness="1" Fill="{TemplateBinding Background}" SnapsToDevicePixels="True">
                                 <Path.RenderTransform>
                                     <TransformGroup>
-                                        <RotateTransform Angle="-45"/>
-                                        <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                        <RotateTransform Angle="0"/>
+                                        <ScaleTransform ScaleX="0.9" ScaleY="0.9"/>
                                     </TransformGroup>
                                 </Path.RenderTransform>
                             </Path>

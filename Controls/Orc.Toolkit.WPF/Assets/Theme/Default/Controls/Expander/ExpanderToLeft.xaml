@@ -19,7 +19,7 @@
 
                         <Border x:Name="HeaderBorder" Background="{DynamicResource Brush_Control_1}" Grid.Column="1">
                             <ToggleButton VerticalAlignment="Top" Margin="1" Content="{TemplateBinding Header}"
-                                          Style="{StaticResource Header_ToggleButon}" MinWidth="20" MinHeight="20"
+                                          Style="{StaticResource Header_ToggleButton}" MinWidth="20" MinHeight="20"
                                       IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ToggleButton.LayoutTransform>
                                     <RotateTransform Angle="-90"/>
@@ -40,7 +40,7 @@
                             <Border Margin="0 0 0 1" Grid.ColumnSpan="2" Background="{StaticResource Brush_Control_1}"/>
                             <ContentControl Content="{TemplateBinding Header}" Margin="2" FontWeight="Bold"
                                             HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-                            <ToggleButton Content="x" Grid.Column="1" Style="{StaticResource Pin_ToggleButon}" Margin="1"
+                            <ToggleButton Content="x" Grid.Column="1" Style="{StaticResource Pin_ToggleButton}" Margin="1"
                                           IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                             <ContentPresenter x:Name="contentPresenter" Grid.Row="1" Grid.ColumnSpan="2"/>
                         </Grid>
