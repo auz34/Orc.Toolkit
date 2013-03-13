@@ -244,7 +244,10 @@ namespace Orc.Toolkit
 
             if (this.owner == null)
             {
-                return Mouse.GetPosition(null);
+                if (lastPosition == new Point(0, 0))
+                    return lastPosition = Mouse.GetPosition(null);
+                else
+                    return lastPosition;
             }
 
             double horizontalOffset = this.HorizontalOffset;
@@ -942,6 +945,7 @@ namespace Orc.Toolkit
             if (!this.IsPinned && !IsMouseOver)
             {
                 this.IsOpen = false;
+                lastPosition = new Point(0, 0);
             }
         }
 
