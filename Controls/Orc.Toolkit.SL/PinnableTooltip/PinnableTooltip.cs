@@ -105,24 +105,44 @@ namespace Orc.Toolkit
             this.DefaultStyleKey = typeof(PinnableTooltip);
             this.parentPopup = new Popup { Child = this };
             this.SizeChanged += this.OnSizeChanged;
-            this.MouseEnter += PinnableTooltip_MouseEnter;
-            this.MouseLeave += PinnableTooltip_MouseLeave;
+            this.MouseEnter += this.PinnableTooltip_MouseEnter;
+            this.MouseLeave += this.PinnableTooltip_MouseLeave;
         }
 
+        /// <summary>
+        /// The pinnable tooltip_ mouse leave.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         void PinnableTooltip_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            isMouseOver = false;
+            this.isMouseOver = false;
             if (this.IsOpen && !this.IsPinned)
             {
-                timer.StopAndReset();
+                this.timer.StopAndReset();
             }
         }
 
+        /// <summary>
+        /// The pinnable tooltip_ mouse enter.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
         void PinnableTooltip_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            isMouseOver = true;
+            this.isMouseOver = true;
             if (this.IsTimerEnabled && !this.IsPinned)
-                timer.Stop();
+            {
+                this.timer.Stop();
+            }
         }
 
         #endregion
