@@ -9,8 +9,12 @@
     <Style x:Key="SettingsDropDownButton" TargetType="{x:Type orcTkt:DropDownButton}">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Brush_Control_2}"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="Focusable" Value="True"/>
         <Setter Property="Height" Value="24"/>
         <Setter Property="Width" Value="24"/>
@@ -34,12 +38,15 @@
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush">
                                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_Highlight_1}"/>
                                                         </ObjectAnimationUsingKeyFrames>
+                                                        <!--<ObjectAnimationUsingKeyFrames Storyboard.TargetName="arrow" Storyboard.TargetProperty="Fill">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_Highlight_1}"/>
+                                                        </ObjectAnimationUsingKeyFrames>-->
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Disabled">
                                                     <Storyboard>
-                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="BorderBrush">
-                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Brush_Control_1}"/>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Disableborder" Storyboard.TargetProperty="Visibility">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
@@ -63,6 +70,10 @@
                                             <ContentControl HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
                                         </Border>
 
+                                        <Path x:Name="arrow" Data="M 0 0 L 2.5 3 L 5 0 Z" Fill="{StaticResource Brush_Highlight_1}" HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom" Stretch="None" Margin="2"/>
+
+                                        <Border x:Name="Disableborder" Background="#77ffffff" Visibility="Collapsed"/>
                                     </Grid>
                                 </ControlTemplate>
                             </ToggleButton.Template>
