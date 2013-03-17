@@ -170,7 +170,6 @@
     <Resource Include="Assets\Theme\Default\Images\printer_16xLG.png" />
     <Resource Include="Assets\Theme\Default\Images\save_16xLG.png" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
