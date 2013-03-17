@@ -4,9 +4,10 @@
         <ResourceDictionary Source="Shared/Colors.xaml"/>
         <ResourceDictionary Source="Shared/Icons.xaml"/>
         <ResourceDictionary Source="Shared/Controls.xaml"/>
-        <ResourceDictionary Source="Controls/Expander/ExpanderToLeft.xaml"/>
         <ResourceDictionary Source="Controls/StatusBar/ItemsPanelTemplate.xaml"/>
         <ResourceDictionary Source="Controls/StatusBar/StatusBar.xaml"/>
+		<ResourceDictionary Source="Controls/TabControl/MainTabControl.xaml"/>
+		<ResourceDictionary Source="Controls/Expander/ExpanderToLeft.xaml"/>
         <ResourceDictionary Source="Controls/DropDownButton/SettingsDropDownButton.xaml"/>
         <ResourceDictionary Source="Controls/ToolBar/ToolBarButton.xaml"/>
         <ResourceDictionary Source="Controls/PinnableTooltip/PinnableTooltip.xaml"/>
