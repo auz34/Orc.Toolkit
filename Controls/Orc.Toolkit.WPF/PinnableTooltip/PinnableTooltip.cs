@@ -242,22 +242,96 @@ namespace Orc.Toolkit
         {
             var position = new Point();
 
-            if (this.owner == null)
-            {
-                if (lastPosition == new Point(0, 0))
-                    return lastPosition = Mouse.GetPosition(null);
-                else
-                    return lastPosition;
-            }
+            Point mousePosition = PinnableTooltipService.MousePosition;
+            FrameworkElement rootVisual = PinnableTooltipService.RootVisual;
 
             double horizontalOffset = this.HorizontalOffset;
             double verticalOffset = this.VerticalOffset;
 
+            //using this code for non UIElements
+            if (this.owner == null)
+            {
+                mousePosition = Mouse.GetPosition(null);
+#if (SILVERLIGHT)
+                RootVisual = Application.Current.RootVisual as FrameworkElement;
+#else
+                rootVisual = System.Windows.Interop.BrowserInteropHelper.IsBrowserHosted ? null :
+                    (Application.Current.MainWindow.Content as FrameworkElement) != null ?
+                    Application.Current.MainWindow.Content as FrameworkElement : Application.Current.MainWindow;
+                
+                if (rootVisual == null)
+                {
+                    if (this.isPositionCalculated)
+                        position = this.lastPosition;
+                    else
+                        position = mousePosition;
+                    return position;
+                }
+#endif
+
+                if (this.isPositionCalculated)
+                {
+                    if (lastPosition.Y + this.DesiredSize.Height > rootVisual.ActualHeight)
+                        this.lastPosition.Y = rootVisual.ActualHeight - this.DesiredSize.Height;
+                    if (lastPosition.X + this.DesiredSize.Width > rootVisual.ActualWidth)
+                        this.lastPosition.X = rootVisual.ActualWidth - this.DesiredSize.Width;
+                    position = this.lastPosition;
+                    return position;
+                }
+
+                
+
+                double offsetX = mousePosition.X + horizontalOffset;
+                double offsetY = mousePosition.Y + verticalOffset;
+
+                //offsetX = Math.Max(2.0, offsetX);
+                //offsetY = Math.Max(2.0, offsetY);
+
+                double actualHeight = rootVisual.ActualHeight;
+                double actualWidth = rootVisual.ActualWidth;
+                double lastHeight = this.lastSize.Height;
+                double lastWidth = this.lastSize.Width;
+
+                var lastRectangle = new Rect(offsetX, offsetY, lastWidth, lastHeight);
+                var actualRectangle = new Rect(0.0, 0.0, actualWidth, actualHeight);
+                actualRectangle.Intersect(lastRectangle);
+
+                if ((offsetY + this.DesiredSize.Height) > actualHeight)
+                {
+                    offsetY = (actualHeight - this.DesiredSize.Height) - 2.0;
+                }
+
+                if (offsetY < 0.0)
+                {
+                    offsetY = 0.0;
+                }
+
+                if ((offsetX + this.DesiredSize.Width) > actualWidth)
+                {
+                    offsetX = (actualWidth - this.DesiredSize.Width) - 2.0;
+                }
+
+                if (offsetX < 0.0)
+                {
+                    offsetX = 0.0;
+                }
+
+                position.Y = offsetY;
+                position.X = offsetX;
+
+                
+                if(this.isPositionCalculated = this.DesiredSize.Height > 0)
+                    this.lastPosition = position;
+                return position;
+            }
+
+            
+
             PlacementMode placementMode = PinnableTooltipService.GetPlacement(this.owner);
             UIElement placementTarget = PinnableTooltipService.GetPlacementTarget(this.owner) ?? this.owner;
 
-            Point mousePosition = PinnableTooltipService.MousePosition;
-            FrameworkElement rootVisual = PinnableTooltipService.RootVisual;
+            
+            
 
             switch (placementMode)
             {
@@ -742,7 +816,7 @@ namespace Orc.Toolkit
             if ((bool)e.NewValue)
             {
                 if (tooltip.adornerDragDrop == null && tooltip.adorner != null)
-                {
+                {                    
                     tooltip.adornerDragDrop = ControlAdornerDragDrop.Attach(tooltip.adorner);
                 }
 
@@ -915,6 +989,8 @@ namespace Orc.Toolkit
             {
                 this.adornerDragDrop = ControlAdornerDragDrop.Attach(this.adorner);
             }
+
+
         }
 
         /// <summary>

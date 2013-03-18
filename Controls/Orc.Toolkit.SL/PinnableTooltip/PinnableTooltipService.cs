@@ -638,7 +638,9 @@ namespace Orc.Toolkit
 #if (SILVERLIGHT)
                 RootVisual = Application.Current.RootVisual as FrameworkElement;
 #else
-                RootVisual = BrowserInteropHelper.IsBrowserHosted ? null : Application.Current.MainWindow;
+                RootVisual = BrowserInteropHelper.IsBrowserHosted ? null :
+                    (Application.Current.MainWindow.Content as FrameworkElement) != null ? 
+                    Application.Current.MainWindow.Content as FrameworkElement: Application.Current.MainWindow;
 #endif
                 if (RootVisual == null)
                 {
