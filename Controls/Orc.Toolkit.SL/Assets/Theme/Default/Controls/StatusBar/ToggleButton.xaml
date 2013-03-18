@@ -8,6 +8,8 @@
 
     <Style x:Key="SBToggleButtonStyle" TargetType="ToggleButton">
         <Setter Property="MinWidth" Value="18"/>
+        <Setter Property="Width" Value="18"/>
+        <Setter Property="Height" Value="18"/>
         <Setter Property="Padding" Value="4 2"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -156,7 +158,7 @@
                         </Border>
 
                         <ContentControl x:Name="content" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"
-                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" ContentTemplate="{TemplateBinding ContentTemplate}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}"/>
                     </Grid>
                 </ControlTemplate>
