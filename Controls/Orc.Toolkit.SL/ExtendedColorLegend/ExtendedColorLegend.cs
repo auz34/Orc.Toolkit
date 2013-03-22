@@ -20,7 +20,7 @@ namespace Orc.Toolkit
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
-    using Orc.Toolkit.Commands;
+    using Commands;
 
     /// <summary>
     /// Control to show color legend with checkboxes for each color
@@ -28,24 +28,26 @@ namespace Orc.Toolkit
     [TemplatePart(Name = "PART_List", Type = typeof(ListBox))]
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     [TemplatePart(Name = "PART_UnselectAll", Type = typeof(ButtonBase))]
+    [TemplatePart(Name = "PART_All_Visible", Type = typeof(CheckBox))]
     public class ExtendedColorLegend : HeaderedContentControl
     {
         #region Dependency properties
-        
-        public string OperationColorAttribute
-        {
-            get { return (string)GetValue(OperationColorAttributeProperty); }
-            set { SetValue(OperationColorAttributeProperty, value); }
-        }
+        /// <summary>
+        /// The operation color attribute property.
+        /// </summary>
         public static readonly DependencyProperty OperationColorAttributeProperty =
-            DependencyProperty.Register("OperationColorAttribute", typeof(string), typeof(ExtendedColorLegend), new PropertyMetadata(""));
-
-
+            DependencyProperty.Register("OperationColorAttribute", typeof(string), typeof(ExtendedColorLegend), new PropertyMetadata(string.Empty));
 
         /// <summary>
         /// Property for colors list
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IColorProvider>), typeof(ExtendedColorLegend), new PropertyMetadata(null, OnItemsSourceChanged));
+
+        /// <summary>
+        /// The is all visible property.
+        /// </summary>
+        public static readonly DependencyProperty IsAllVisibleProperty = DependencyProperty.Register(
+            "IsAllVisible", typeof(bool), typeof(ExtendedColorLegend), new PropertyMetadata(false));
 
         /// <summary>
         /// Property for colors list
@@ -117,7 +119,7 @@ namespace Orc.Toolkit
         /// </summary>
         public static readonly DependencyProperty FilterWatermarkProperty = DependencyProperty.Register("FilterWatermark", typeof(string), typeof(ExtendedColorLegend), new UIPropertyMetadata("Search"));
 
-        #else
+#else
         /// <summary>
         /// Property indicating whether search box is shown or not
         /// </summary>
@@ -165,10 +167,12 @@ namespace Orc.Toolkit
         /// </summary>
         private Popup popup;
 
-            /// <summary>
+        /// <summary>
         /// The button color change
         /// </summary>
         private ButtonBase button;
+
+        public CheckBox checkBox;
 
         /// <summary>
         /// Item color of which is editing now
@@ -185,9 +189,9 @@ namespace Orc.Toolkit
         /// </summary>
         static ExtendedColorLegend()
         {
-            #if (!SILVERLIGHT)
+#if (!SILVERLIGHT)
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedColorLegend), new FrameworkPropertyMetadata(typeof(ExtendedColorLegend)));
-            #endif
+#endif
         }
 
         /// <summary>
@@ -195,22 +199,30 @@ namespace Orc.Toolkit
         /// </summary>
         public ExtendedColorLegend()
         {
-            #if (!SILVERLIGHT)
+#if (!SILVERLIGHT)
             CommandBindings.Add(
                 new CommandBinding(ExtendedColorLegendCommands.ClearFilter, this.ClearFilter, this.CanClearFilter));
-            #else
+#else
             this.ClearFilterCommand = new DelegateCommand(o => this.Filter = string.Empty, o => string.IsNullOrEmpty(this.Filter));
-            #endif
+#endif
         }
 
         #region Public properties
+        /// <summary>
+        /// Gets or sets the operation color attribute.
+        /// </summary>
+        public string OperationColorAttribute
+        {
+            get { return (string)GetValue(OperationColorAttributeProperty); }
+            set { this.SetValue(OperationColorAttributeProperty, value); }
+        }
 
-        #if (SILVERLIGHT)
+#if (SILVERLIGHT)
         /// <summary>
         ///     Gets or sets BrowseCommand.
         /// </summary>
         public ICommand ClearFilterCommand { get; set; }
-        #endif
+#endif
 
         /// <summary>
         /// Gets or sets a value indicating whether color can be edited or not
@@ -228,7 +240,7 @@ namespace Orc.Toolkit
             }
         }
 
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether search box is shown or not
         /// </summary>
@@ -378,6 +390,19 @@ namespace Orc.Toolkit
             }
         }
 
+        public bool IsAllVisible
+        {
+            get
+            {
+                return (bool)GetValue(IsAllVisibleProperty);
+            }
+
+            set
+            {
+                this.SetValue(IsAllVisibleProperty, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets a source for color items respecting current filter value
         /// </summary>
@@ -467,6 +492,7 @@ namespace Orc.Toolkit
             this.listBox = (ListBox)this.GetTemplateChild("PART_List");
             this.popup = (Popup)this.GetTemplateChild("PART_Popup");
             this.button = (ButtonBase)GetTemplateChild("PART_UnselectAll");
+            this.checkBox = (CheckBox)GetTemplateChild("PART_All_Visible");
 
             if (this.listBox != null)
             {
@@ -481,10 +507,22 @@ namespace Orc.Toolkit
             if (button != null)
             {
                 button.Click += (s, e) =>
-                    {
-                        if (listBox != null)
-                            listBox.SelectedIndex = -1;
-                    };
+                {
+                    if (listBox != null)
+                        listBox.SelectedIndex = -1;
+                };
+            }
+
+            if (this.checkBox != null)
+            {
+                this.checkBox.Checked += (sender, args) =>
+                {
+                    this.IsAllVisible = true;
+                };
+                this.checkBox.Unchecked += (sender, args) =>
+                {
+                    this.IsAllVisible = false;
+                };
             }
 
             this.colorBoard = new ColorBoard();
@@ -610,7 +648,7 @@ namespace Orc.Toolkit
             this.FilteredItemsSource = this.GetFilteredItems();
         }
 
-        #if (!SILVERLIGHT)
+#if (!SILVERLIGHT)
         #region Commands
 
         /// <summary>
@@ -679,7 +717,7 @@ namespace Orc.Toolkit
             this.IsColorSelecting = true;
         }
 
-        #endif
+#endif
 
         /// <summary>
         /// The color board_ done clicked.
