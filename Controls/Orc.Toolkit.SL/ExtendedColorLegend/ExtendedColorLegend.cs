@@ -20,7 +20,7 @@ namespace Orc.Toolkit
     using System.Windows.Data;
     using System.Windows.Input;
     using System.Windows.Media;
-    using Commands;
+    using Orc.Toolkit.Commands;
 
     /// <summary>
     /// Control to show color legend with checkboxes for each color
@@ -28,26 +28,24 @@ namespace Orc.Toolkit
     [TemplatePart(Name = "PART_List", Type = typeof(ListBox))]
     [TemplatePart(Name = "PART_Popup", Type = typeof(Popup))]
     [TemplatePart(Name = "PART_UnselectAll", Type = typeof(ButtonBase))]
-    [TemplatePart(Name = "PART_All_Visible", Type = typeof(CheckBox))]
     public class ExtendedColorLegend : HeaderedContentControl
     {
         #region Dependency properties
-        /// <summary>
-        /// The operation color attribute property.
-        /// </summary>
+        
+        public string OperationColorAttribute
+        {
+            get { return (string)GetValue(OperationColorAttributeProperty); }
+            set { SetValue(OperationColorAttributeProperty, value); }
+        }
         public static readonly DependencyProperty OperationColorAttributeProperty =
-            DependencyProperty.Register("OperationColorAttribute", typeof(string), typeof(ExtendedColorLegend), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("OperationColorAttribute", typeof(string), typeof(ExtendedColorLegend), new PropertyMetadata(""));
+
+
 
         /// <summary>
         /// Property for colors list
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IColorProvider>), typeof(ExtendedColorLegend), new PropertyMetadata(null, OnItemsSourceChanged));
-
-        /// <summary>
-        /// The is all visible property.
-        /// </summary>
-        public static readonly DependencyProperty IsAllVisibleProperty = DependencyProperty.Register(
-            "IsAllVisible", typeof(bool), typeof(ExtendedColorLegend), new PropertyMetadata(false));
 
         /// <summary>
         /// Property for colors list
@@ -172,8 +170,6 @@ namespace Orc.Toolkit
         /// </summary>
         private ButtonBase button;
 
-        public CheckBox checkBox;
-
         /// <summary>
         /// Item color of which is editing now
         /// </summary>
@@ -182,7 +178,7 @@ namespace Orc.Toolkit
         /// <summary>
         /// Change color command
         /// </summary>
-        private ICommand changeColorCommand;        
+        private ICommand changeColorCommand;
 
         /// <summary>
         /// Initializes static members of the <see cref="ExtendedColorLegend" /> class.
@@ -208,14 +204,6 @@ namespace Orc.Toolkit
         }
 
         #region Public properties
-        /// <summary>
-        /// Gets or sets the operation color attribute.
-        /// </summary>
-        public string OperationColorAttribute
-        {
-            get { return (string)GetValue(OperationColorAttributeProperty); }
-            set { this.SetValue(OperationColorAttributeProperty, value); }
-        }
 
         #if (SILVERLIGHT)
         /// <summary>
@@ -390,19 +378,6 @@ namespace Orc.Toolkit
             }
         }
 
-        public bool IsAllVisible
-        {
-            get
-            {
-                return (bool) GetValue(IsAllVisibleProperty);
-            }
-
-            set
-            {
-                this.SetValue(IsAllVisibleProperty, value);                
-            }
-        }
-
         /// <summary>
         /// Gets or sets a source for color items respecting current filter value
         /// </summary>
@@ -415,7 +390,7 @@ namespace Orc.Toolkit
 
             set
             {
-                this.SetValue(FilteredItemsSourceProperty, value);                
+                this.SetValue(FilteredItemsSourceProperty, value);
             }
         }
 
@@ -492,7 +467,6 @@ namespace Orc.Toolkit
             this.listBox = (ListBox)this.GetTemplateChild("PART_List");
             this.popup = (Popup)this.GetTemplateChild("PART_Popup");
             this.button = (ButtonBase)GetTemplateChild("PART_UnselectAll");
-            this.checkBox = (CheckBox)GetTemplateChild("PART_All_Visible");
 
             if (this.listBox != null)
             {
@@ -511,16 +485,6 @@ namespace Orc.Toolkit
                         if (listBox != null)
                             listBox.SelectedIndex = -1;
                     };
-            }
-
-            if (this.checkBox != null) 
-            {
-                this.checkBox.Checked += (sender, args) => { 
-                    this.IsAllVisible = true; 
-                };
-                this.checkBox.Unchecked += (sender, args) => { 
-                    this.IsAllVisible = false; 
-                };
             }
 
             this.colorBoard = new ColorBoard();
